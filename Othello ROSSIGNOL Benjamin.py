@@ -7,30 +7,7 @@
 #    2 Initialisation
 #    3 Utilitaires
 #    4 Pose d'un pion
-#    5 Changement de joueur
-#    6 Affichage
-#    7 Programme principal
-#
-#################################
-
-from graphics import *
-
-##########################################################
-#    1 CONSTANTES, CLASS
-##########################################################
-
-#      1.1 CONSTANTES
-
-# Constantes des cases du plateau
-
-AUCUN = 0   # pas de pion dans la case
-BLANC = 1   # pion blanc dans la case
-NOIR  = 2   # pion noir dans la case
-
-# Constantes du graphisme
-
-# Constantes de la grille
-TAILLE_GRILLE = 4                                # Nombre de cases dans un coté de la grille (nbr pair)
+ombre de cases dans un coté de la grille (nbr pair)
 LARGEUR_GRILLE = 600                             # Largeur de la grille en pixels
 LARGEUR_CASE = LARGEUR_GRILLE // TAILLE_GRILLE   # Largeur d'une case en pixels
 CENTRE_CASE = LARGEUR_CASE // 2                  # Centre d'un case en pixels
