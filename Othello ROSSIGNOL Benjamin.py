@@ -1,7 +1,7 @@
 ﻿#################################
 #       ROSSIGNOL BENJAMIN4
 # Mini-Projet ISN & NSI
-#        OTHELLO
+#        OTHELL
 #    SOMMAIRE
 #    1 Constantes, class
 #    2 Initialisation
