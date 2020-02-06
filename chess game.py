@@ -81,6 +81,7 @@ def ennemy():
 
 def drop_piece():
     """ drop a piece"""
+    G.grid[ABS][ORD]=G.activePlayer
 
 def select_piece():
     """select the piece you click on"""
