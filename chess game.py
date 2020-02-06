@@ -14,6 +14,8 @@ LEN_CASE = LEN_GRID // NBR_CASE
 PANEL_COLOR1 = couleur(130,35,1) #brown
 PANEL_COLOR2 = couleur(225,224,163) #beige
 
+RAY_PIECE= 25
+
 NONE = 0
 BLACK = 1
 WHITE = 2
@@ -101,8 +103,14 @@ def display_panel():
 
 def display_piece():
     ''' Show a normal piece on the grid undefinetly on their type,while taking in count their color'''
-
-
+    for i in range (0,LEN_GRID):
+        for j in range (0,LEN_GRID):
+            if G.grid[ABS][ORD]==BLACK:
+                affiche_cercle_plein(Point(ABS*LEN_CASE+LEN_CASE//2,ORD*LEN_CASE+LEN_CASE//2),RAY_PIECE, noir)
+            elif G.grid[ABS][ORD]==WHITE:
+                affiche_cercle_plein(Point(ABS*LEN_CASE+LEN_CASE//2,ORD*LEN_CASE+LEN_CASE//2),RAY_PIECE, blanc)
+                
+                
 def display_config_panel ():
     ''' for mater, change color, timer, numer of piece..'''
 
