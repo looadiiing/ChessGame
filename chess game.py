@@ -146,18 +146,17 @@ clic = Point()
 while not(end_game(G)) and pas_echap():
     clic = wait_clic()
     if clic.x < LEN_GRID: # we r on the panel
-        ABS1 = get_abs(clic)
-        ORD1 = get_ord(clic)
-        if G.grid[ABS1][ORD1] != NONE:
-            select_piece(G,ABS1,ORD1) # select the piece
-            G.activePlayer == G.grid[ABS1][ORD1] # color of player become the one of the selected piece
-            clic = wait_clic()
-            if clic.x < LEN_GRID: # we r on the panel
-                ABS2 = get_abs(clic)
-                ORD2 = get_ord(clic)
-                if G.grid[ABS2][ORD2] == NONE: # no piece on the grid
-                    drop_piece(G,ABS2,ORD2)    # drop a piece on the case selcted (2nd clic)
-                    delete_piece (G,ABS1,ORD1) # take off the piece (1st piece)
+        ABS = get_abs(clic)
+        ORD = get_ord(clic)
+
+        if G.grid[ABS][ORD] != NONE:
+            select_piece(G,ABS,ORD) # select the piece
+            G.activePlayer == G.grid[ABS][ORD] # color of player become the one of the selected piece
+
+        elif G.grid[ABS][ORD] == NONE: #no piece
+            """ and select_piece(G)"""  # and a piece selected before
+            drop_piece(G,ABS,ORD)    # drop a piece on the case selcted (2nd clic)
+            """delete_piece (G,ABS,ORD)""" # take off the piece (1st piece)
     # nothing if not on panel
     display_game(G)
 attendre_echap()
