@@ -115,6 +115,12 @@ def get_ord(clic):
     return CLICK_ORD
 
 
+def change_player(G,ABS,ORD):
+
+    G.activePlayer=G.grid[G.selectedPiece[0]][G.selectedPiece[1]]
+    """change active player"""
+
+
 def ennemy():
     """optional: can't play if not your turn"""
 
@@ -131,7 +137,12 @@ def select_piece(G,ABS,ORD):
    G.selectedPiece = (ABS,ORD)
    """select the piece you click on"""
 
-def delete_piece():
+def delete_piece(G):
+
+    G.grid[G.selectedPiece[0]][G.selectedPiece[1]] = NONE
+
+    G.selectedPiece = (None)
+
     """erase the piece that move"""
 
 def valid_move():
@@ -212,33 +223,11 @@ while not(end_game(G)) and pas_echap():
 
         if G.grid[ABS][ORD] != NONE:
             select_piece(G,ABS,ORD) # select the piece
-            G.activePlayer == G.grid[ABS][ORD] # color of player become the one of the selected piece
+            change_player(G,ABS,ORD) # color of player become the one of the selected piece
 
-        elif G.grid[ABS][ORD] == NONE: #and G.selectedPiece != (None) : #no piece and a piece selected before
+        elif G.grid[ABS][ORD] == NONE and G.selectedPiece != (None) : #no piece and a piece selected before
             drop_piece(G,ABS,ORD)    # drop a piece on the case selcted (2nd clic)
-            #delete_piece (G)  # take off the piece (1st piece)
-    # nothing if not on panel
-    display_game(G)
-attendre_echap()
-
-
-
-while not(end_game(G)) and pas_echap():
-
-    click = wait_clic()
-
-    if click.x < LEN_GRID: # we r on the panel
-
-        CLICK_ABS = get_abs(click)
-        CLICK_ORD = get_ord(click)
-        if G.grid[CLICK_ABS][CLICK_ORD] != NONE:
-            select_piece(G,CLICK_ABS,CLICK_ORD) # select the piece
-            G.activePlayer == G.grid[CLICK_ABS][CLICK_ORD] # color of player become the one of the selected piece
-
-        elif G.grid[CLICK_ABS][CLICK_ORD] == NONE: #no piece
-            """ and select_piece(G)"""  # and a piece selected before
-            drop_piece(G,CLICK_ABS,CLICK_ORD)    # drop a piece on the case selcted (2nd clic)
-            """delete_piece (G,CLICK_ABS,CLICK_ORD)""" # take off the piece (1st piece)
+            delete_piece (G)  # take off the piece (1st piece)
     # nothing if not on panel
     display_game(G)
 attendre_echap()
