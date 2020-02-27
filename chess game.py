@@ -1,14 +1,17 @@
+from graphics import *
+
+
 ############ DISCLAMER ############
 
 # In this whole program :
 #
 # LEN        --> Length
 # SQU        --> Case
-# ABS        --> Abscissa
-# ORD        --> Ordinate
+# PIX_ABS        --> Abscissa
+# PIX_ORD        --> Ordinate
 
-# SQU_ABS    --> Abscissa of square
-# SQU_ORD    --> Ordinate of square
+# ABS    --> Abscissa of square
+# ORD    --> Ordinate of square
 
 
 
@@ -45,7 +48,8 @@ class Game():
     __slots__ = (
 
         "grid",
-        "activePlayer"
+        "activePlayer",
+        "selectedPiece"
     )
 
 
@@ -53,6 +57,7 @@ class Game():
 
         self.grid = [[NONE] * NBR_SQU for nbr_square in range(NBR_SQU)]
         self.activePlayer = FIRST_PLAYER
+        self.selectedPiece = (None)
 
 
 class Piece():
@@ -72,10 +77,21 @@ class Piece():
 
 
 
+
 ### II INITIALIZATION ###
 
 def init_game ():
     G = Game()
+
+    for line in range (2):
+        for column in range (NBR_SQU):
+            G.grid[column][line]=WHITE
+
+    for line in range (6,8):
+        for column in range (NBR_SQU):
+            G.grid[column][line]=BLACK
+
+
 
     return G
     """game loaded with panel and piece (version 1, same piece then chess piece) """
@@ -85,17 +101,17 @@ def end_game(G):
 
 ### III UTILITIES ###
 
-def get_abs(click):
+def get_abs(clic):
     """return abs in grid"""
 
-    CLICK_ABS = click.x//LEN_CASE
+    CLICK_ABS = clic.x//LEN_CASE
 
     return CLICK_ABS
 
-def get_ord(click):
+def get_ord(clic):
     """return ord in grid"""
 
-    CLICK_ORD = click.y//LEN_CASE
+    CLICK_ORD = clic.y//LEN_CASE
     return CLICK_ORD
 
 
@@ -105,13 +121,15 @@ def ennemy():
 
 ### IV DROP PIECES ###
 
-def drop_piece():
+def drop_piece(G,ABS,ORD):
     """ drop a piece"""
 
     G.grid[ABS][ORD]=G.activePlayer
 
-def select_piece():
-    """select the piece you click on"""
+def select_piece(G,ABS,ORD):
+
+   G.selectedPiece = (ABS,ORD)
+   """select the piece you click on"""
 
 def delete_piece():
     """erase the piece that move"""
@@ -127,17 +145,17 @@ def valid_case():
 def display_panel():
     ''' Show the panel with 2 different colors for each case'''
 
-    for SQU_ABS in range(0,NBR_SQU):
+    for ABS in range(0,NBR_SQU):
 
-        for SQU_ORD in range(0,NBR_SQU):
+        for ORD in range(0,NBR_SQU):
 
-            if SQU_ABS%2 == 0 and SQU_ORD%2 == 0 or SQU_ABS%2 != 0 and SQU_ORD%2 != 0:
+            if ABS%2 == 0 and ORD%2 == 0 or ABS%2 != 0 and ORD%2 != 0:
             # If square abs and ord are even or if square abs and ord are odd
 
-                affiche_rectangle_plein(Point(LEN_CASE*SQU_ABS,LEN_CASE*SQU_ORD),Point(LEN_CASE*(SQU_ABS+1),LEN_CASE*(SQU_ORD+1)),PANEL_COLOR1)
+                affiche_rectangle_plein(Point(LEN_CASE*ABS,LEN_CASE*ORD),Point(LEN_CASE*(ABS+1),LEN_CASE*(ORD+1)),PANEL_COLOR1)
 
             else :
-                affiche_rectangle_plein(Point(LEN_CASE*SQU_ABS,LEN_CASE*SQU_ORD),Point(LEN_CASE*(SQU_ABS+1),LEN_CASE*(SQU_ORD+1)),PANEL_COLOR2)
+                affiche_rectangle_plein(Point(LEN_CASE*ABS,LEN_CASE*ORD),Point(LEN_CASE*(ABS+1),LEN_CASE*(ORD+1)),PANEL_COLOR2)
 
 
 
@@ -156,10 +174,12 @@ def display_piece():
 def display_config_panel(G):
     ''' for mater, change color, timer, numer of piece..'''
     affiche_rectangle_plein(Point(LEN_GRID,0),Point(LEN_GRID+LEN_PANEL,LEN_GRID),CONFIG_COLOR3)
-def display_piece_selection():
+
+
+def display_piece_selection(G):
+    if G.selectedPiece != (None):
+        affiche_rectangle(Point(G.selectedPiece[0]*LEN_CASE,G.selectedPiece[1]*LEN_CASE),Point((G.selectedPiece[0]+1)*LEN_CASE,(G.selectedPiece[1]+1)*LEN_CASE),rouge,5)
     '''show which piece is selected'''
-
-
 
 
 
@@ -170,6 +190,7 @@ def display_game(J):
     display_panel()
     display_config_panel(G)
     display_piece()
+    display_piece_selection(G)
     affiche_tout()
 
 
@@ -181,6 +202,25 @@ affiche_auto_off()
 G = init_game()
 display_game(G)
 click = Point()
+
+
+while not(end_game(G)) and pas_echap():
+    clic = wait_clic()
+    if clic.x < LEN_GRID: # we r on the panel
+        ABS = get_abs(clic)
+        ORD = get_ord(clic)
+
+        if G.grid[ABS][ORD] != NONE:
+            select_piece(G,ABS,ORD) # select the piece
+            G.activePlayer == G.grid[ABS][ORD] # color of player become the one of the selected piece
+
+        elif G.grid[ABS][ORD] == NONE: #and G.selectedPiece != (None) : #no piece and a piece selected before
+            drop_piece(G,ABS,ORD)    # drop a piece on the case selcted (2nd clic)
+            #delete_piece (G)  # take off the piece (1st piece)
+    # nothing if not on panel
+    display_game(G)
+attendre_echap()
+
 
 
 while not(end_game(G)) and pas_echap():
