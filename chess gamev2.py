@@ -56,7 +56,7 @@ class Game():
 
         "grid",
         "activePlayer",
-        "selectedSquare"
+        "selectedSquare",
         "arrivalSquare"
     )
 
@@ -74,7 +74,7 @@ class Piece():
 
     __slots__= (
 
-        "color"
+        "color",
         "type"
     )
 
@@ -127,7 +127,7 @@ def get_ord(clic):
 
 def change_player(G,ABS,ORD):
 
-    G.activePlayer=G.grid[G.selectedPiece[0]][G.selectedPiece[1]]
+    G.activePlayer=G.grid[G.selectedSquare[0]][G.selectedSquare[1]]
     """change active player"""
 
 
@@ -144,14 +144,14 @@ def drop_piece(G,ABS,ORD):
 
 def select_piece(G,ABS,ORD):
 
-   G.selectedPiece = (ABS,ORD)
+   G.selectedSquare = (ABS,ORD)
    """select the piece you click on"""
 
 def delete_piece(G):
 
-    G.grid[G.selectedPiece[0]][G.selectedPiece[1]] = NONE
+    G.grid[G.selectedSquare[0]][G.selectedSquare[1]] = NONE
 
-    G.selectedPiece = (None)
+    G.selectedSquare = (None)
 
     """erase the piece that move"""
 
@@ -198,8 +198,8 @@ def display_config_panel(G):
 
 
 def display_piece_selection(G):
-    if G.selectedPiece != (None):
-        affiche_rectangle(Point(G.selectedPiece[0]*LEN_CASE,G.selectedPiece[1]*LEN_CASE),Point((G.selectedPiece[0]+1)*LEN_CASE,(G.selectedPiece[1]+1)*LEN_CASE),rouge,5)
+    if G.selectedSquare != (None):
+        affiche_rectangle(Point(G.selectedSquare[0]*LEN_CASE,G.selectedSquare[1]*LEN_CASE),Point((G.selectedSquare[0]+1)*LEN_CASE,(G.selectedSquare[1]+1)*LEN_CASE),rouge,5)
     '''show which piece is selected'''
 
 
@@ -224,8 +224,7 @@ G = init_game()
 display_game(G)
 click = Point()
 
-W_PAWN1 = [Piece.color[1],Piece.type[1]]
-print(W_PAWN1)
+
 
 while not(end_game(G)) and pas_echap():
     clic = wait_clic()
@@ -237,7 +236,7 @@ while not(end_game(G)) and pas_echap():
             select_piece(G,ABS,ORD) # select the piece
             change_player(G,ABS,ORD) # color of player become the one of the selected piece
 
-        elif G.grid[ABS][ORD] == NONE and G.selectedPiece != (None) : #no piece and a piece selected before
+        elif G.grid[ABS][ORD] == NONE and G.selectedSquare != (None) : #no piece and a piece selected before
             drop_piece(G,ABS,ORD)    # drop a piece on the case selcted (2nd clic)
             delete_piece (G)  # take off the piece (1st piece)
     # nothing if not on panel
