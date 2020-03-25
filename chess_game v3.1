@@ -58,6 +58,7 @@ class Game():
 
         "grid",
         "activePlayer",
+        "selectedPiece",
         "selectedSquare",
         "arrivalSquare",
         "piece"
@@ -68,9 +69,12 @@ class Game():
 
         self.grid = [[NONE] * NBR_SQU for nbr_square in range(NBR_SQU)]
         self.activePlayer = FIRST_PLAYER
+        self.selectedPiece = None
         self.selectedSquare = (None)
         self.arrivalSquare = (None)
         self.piece =Piece()
+
+
 
 
 class Piece():
@@ -153,7 +157,7 @@ def get_ord(clic):
 def what_is_piece(G,ABS,ORD):
     """return piece type and color"""
 
-    G.activePlayer=G.grid[G.selectedSquare[0]][G.selectedSquare[1]]
+    G.selectedPiece=G.grid[G.selectedSquare[0]][G.selectedSquare[1]]
 
 
 def piece_color(COLOR):
@@ -207,7 +211,7 @@ def ennemy(G):
 def drop_piece(G,ABS,ORD):
     """ drop a piece"""
 
-    G.grid[ABS][ORD]=G.activePlayer
+    G.grid[ABS][ORD]=G.selectedPiece
 
 def select_piece(G,ABS,ORD):
 
@@ -221,7 +225,8 @@ def valid_case(G,ABS,ORD):
 
     condition=False
                                         # Si il n'y a pas de pions sur la case est qu'il y a au moins une direction valide, alors la case est valide
-    if G.grid[ABS][ORD] == NONE and len(valid_list_directions(G,ABS,ORD)) !=0:
+    if len(valid_list_directions(G,ABS,ORD)) !=0:
+
 
         condition=True
 
@@ -232,8 +237,10 @@ def valid_list_directions(G,ABS,ORD):
     resultat = []                       # Crée une liste vide resultat
     for l in range (len(ROOK_DIR)):
         if move_rook(G,ROOK_DIR[l],G.activePlayer,ABS,ORD)==True:
+
                                         # Si la direction est valide, alors ajoute la direction valide dans resultat
             resultat.append(ROOK_DIR[l])
+
     return resultat
 
 def move_rook(G,direction,player,ABS,ORD):
@@ -244,13 +251,14 @@ def move_rook(G,direction,player,ABS,ORD):
     dirx=direction[0]                   # Coordonnée x de la direction
     diry=direction[1]                   # Coordonnée y de la direction
     k=1
-    while is_valid_pos(ABS+dirx*k,ORD+diry*k) and G.grid[ABS+dirx*k][ORD+diry*k] != NONE:
+    while is_valid_pos(ABS+dirx*k,ORD+diry*k) and G.grid[ABS+dirx*k][ORD+diry*k] == NONE:
+
 
                                         # Tant que la direction est valide
         PIECE=G.grid[ABS+dirx*k][ORD+diry*k]
         if P.type[0] == G.activePlayer:
 
-
+            print("cc")
             condition=True
 
         k=k+1
