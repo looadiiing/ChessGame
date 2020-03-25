@@ -1,8 +1,3 @@
-from graphics import *
-
-
-
-
 ############ DISCLAMER ############
 
 # In this whole program :
@@ -15,7 +10,7 @@ from graphics import *
 # ABS    --> Abscissa of square
 # ORD    --> Ordinate of square
 
-
+#  When "type" is used, it's not the the FUNCION type, it's the VARIABLE named type.
 
 from graphics import *
 
@@ -135,6 +130,7 @@ def init_piece():
 
 
     return P
+
 def end_game(G):
     """ end of the game if Mate"""
 
@@ -154,10 +150,11 @@ def get_ord(clic):
     return CLICK_ORD
 
 
-def change_player(G,ABS,ORD):
+def what_is_piece(G,ABS,ORD):
+    """return piece type and color"""
 
     G.activePlayer=G.grid[G.selectedSquare[0]][G.selectedSquare[1]]
-    """change active player"""
+
 
 def piece_color(COLOR):
     color=None
@@ -167,37 +164,39 @@ def piece_color(COLOR):
         color=noir
     return color
 
+
 def piece_display_type(TYPE):
-    types=None
+    ''''''
+    display_type=None
     if TYPE == PAWN:
-        types = display_pawn
+        display_type = display_pawn
     elif TYPE == ROOK:
-        types = display_rook
+        display_type = display_rook
     elif TYPE == BISHOP:
-        types = display_bishop
+        display_type = display_bishop
     elif TYPE == KNIGHT:
-        types = display_knight
+        display_type = display_knight
     elif TYPE == QUEEN:
-        types = display_queen
+        display_type = display_queen
     else:
-        types = display_king
-    return types
+        display_type = display_king
+    return display_type
 
 def piece_move_type(TYPE):
-    types=None
+    move_type=None
     if TYPE == PAWN:
-        types = move_pawn
+        move_type = move_pawn
     elif TYPE == ROOK:
-        types = move_rook
+        move_type = move_rook
     elif TYPE == BISHOP:
-        types = move_bishop
+        move_type = move_bishop
     elif TYPE == KNIGHT:
-        types = move_knight
+        move_type = move_knight
     elif TYPE == QUEEN:
-        types = move_queen
+        move_type = move_queen
     else:
-        types = move_king
-    return types
+        move_type = move_king
+    return move_type
 
 def ennemy(G):
     """optional: can't play if not your turn"""
@@ -246,9 +245,9 @@ def move_rook(G,direction,player,ABS,ORD):
     diry=direction[1]                   # Coordonnée y de la direction
     k=1
     while is_valid_pos(ABS+dirx*k,ORD+diry*k) and G.grid[ABS+dirx*k][ORD+diry*k] != NONE:
+
                                         # Tant que la direction est valide
         PIECE=G.grid[ABS+dirx*k][ORD+diry*k]
-        print(PIECE)
         if P.type[0] == G.activePlayer:
 
 
@@ -279,9 +278,9 @@ def valid_move(P,G,direction,player,ABS,ORD):
 
         PIECE=G.grid[G.selectedSquare[0]][G.selectedSquare[1]]
 
-        types = piece_move_type(PIECE[1])
+        move_type = piece_move_type(PIECE[1])
 
-        types(G,direction,player,ABS,ORD)
+        move_type(G,direction,player,ABS,ORD)
 
 
 ### VI DISPLAY ###
@@ -315,9 +314,9 @@ def display_piece(G,P):
 
                 color = piece_color(PIECE[0])
 
-                types = piece_display_type(PIECE[1])
+                display_type = piece_display_type(PIECE[1])
 
-                types(ABS,ORD,color)
+                display_type(ABS,ORD,color)
 
 
 def display_pawn(ABS,ORD,color):
@@ -392,9 +391,11 @@ def display_config_panel(G):
 
 
 def display_piece_selection(G):
+    '''show which piece is selected'''
+
     if G.selectedSquare != (None):
         affiche_rectangle(Point(G.selectedSquare[0]*LEN_CASE,G.selectedSquare[1]*LEN_CASE),Point((G.selectedSquare[0]+1)*LEN_CASE,(G.selectedSquare[1]+1)*LEN_CASE),rouge,5)
-    '''show which piece is selected'''
+
 
 def display_valid_squ(G):
     for ABS in range (0,NBR_SQU):
@@ -419,6 +420,8 @@ def display_game(J):
 
 init_fenetre(LEN_GRID+LEN_PANEL,LEN_GRID,"Chess Game")
 affiche_auto_off()
+
+
 
 P = init_piece()
 
@@ -448,16 +451,15 @@ clic = Point()
 
 
 while not(end_game(G)) and pas_echap():
+
     clic = wait_clic()
     if clic.x < LEN_GRID: # we r on the panel
-        val=valid_list_directions(G,3,4)
-        print(val)
         ABS = get_abs(clic)
         ORD = get_ord(clic)
 
         if G.grid[ABS][ORD] != NONE:
             select_piece(G,ABS,ORD) # select the piece
-            change_player(G,ABS,ORD) # color of player become the one of the selected piece
+            what_is_piece(G,ABS,ORD) # return piece type and color
 
         elif G.grid[ABS][ORD] == NONE and G.selectedSquare != (None) : #no piece and a piece selected before
             drop_piece(G,ABS,ORD)    # drop a piece on the case selcted (2nd clic)
