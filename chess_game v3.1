@@ -262,7 +262,7 @@ def move_rook(G,direction,player,ABS,ORD):
 
 def is_valid_pos(posx,posy):
     """ Check if square is still in the game grid"""
-    return 0<=posx<LEN_GRID and 0<=posy<LEN_GRID
+    return 0<=posx<NBR_SQU and 0<=posy<NBR_SQU
 
 
 def delete_piece(G):
@@ -397,8 +397,8 @@ def display_piece_selection(G):
     '''show which piece is selected'''
 
 def display_valid_squ(G):
-    for ABS in range (0,LEN_GRID):
-        for ORD in range(0,LEN_GRID):
+    for ABS in range (0,NBR_SQU):
+        for ORD in range(0,NBR_SQU):
             if valid_case(G,ABS,ORD)==True:
                 affiche_rectangle_plein(Point(ABS*LEN_CASE,ORD*LEN_CASE), Point((ABS+1)*LEN_CASE,(1+ORD)*LEN_CASE),ACTIVE_SQU)
 
