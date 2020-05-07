@@ -13,10 +13,10 @@
 
 from graphics import *
 
+
+
+
 ### 0 CONSTANTS ###
-
-
-
 
 # Game Lengths sizes
 
@@ -33,6 +33,7 @@ PANEL_COLOR1 = couleur(130,35,1)        # brown
 PANEL_COLOR2 = couleur(225,224,163)     # beige
 CONFIG_COLOR3 = couleur(37,39,114)      # blue
 ACTIVE_SQU_COLOR = couleur(125,125,125) # grey
+
 
 # Game Constants
 
