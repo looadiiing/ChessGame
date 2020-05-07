@@ -113,7 +113,7 @@ class Piece():
         type    : list of all possible types
 
     """
-    __slots__= (
+    __slots__ = (
 
         "color",
         "type"
@@ -225,7 +225,7 @@ def piece_color(COLOR):
 def piece_display_type(TYPE):
     """Check what piece it is and return display_'Piece name'"""
 
-    display_type=None
+    display_type = None
 
     if TYPE == PAWN:
         display_type = display_pawn
@@ -246,7 +246,7 @@ def piece_display_type(TYPE):
 def piece_move_type(TYPE):
     """Check what piece it is and return move_'Piece name'"""
 
-    move_type=None
+    move_type = None
 
     if TYPE == PAWN:
         move_type = move_pawn
@@ -267,29 +267,29 @@ def piece_move_type(TYPE):
 def is_in_grid(ABS,ORD):
     """Returns True if square is still in the game grid"""
 
-    condition=False
+    condition = False
     if 0<=ABS<NBR_SQU and 0<=ORD<NBR_SQU:
-        condition=True
+        condition = True
     return condition
 
 
 def are_same_color(G,ABS,ORD):
     """Returns True if selectedPiece's color and entryPiece's color are the same"""
 
-    condition=False
+    condition = False
 
     if what_is_selected_piece(G)[0] == G.grid[ABS][ORD][0]:
-        condition=True
+        condition = True
     return condition
 
 
 def empty_pos(G,ABS,ORD):
     """Returns True if the pos is empty"""
 
-    condition=False
+    condition = False
 
-    if G.grid[ABS][ORD]==NONE:
-        condition=True
+    if G.grid[ABS][ORD] == NONE:
+        condition = True
 
     return condition
 
@@ -332,11 +332,11 @@ def delete_piece(G):
 def is_in_valid_square(G):
     """"Check if arrivalSquare is in the validSquare list"""
 
-    condition=False
+    condition = False
 
     for square in G.validSquares:
         if square == G.arrivalSquare:
-            condition=True
+            condition = True
 
     return condition
 
@@ -458,7 +458,7 @@ def display_piece(G,P):
 def display_pawn(ABS,ORD,color):
     """Displays pawn"""
 
-    RADIUS=LEN_CASE//6
+    RADIUS = LEN_CASE//6
 
     affiche_cercle_plein(Point(ABS*LEN_CASE +LEN_CASE//2, ORD*LEN_CASE +LEN_CASE//2+RADIUS),RADIUS-RADIUS//3,color)
     affiche_cercle_plein(Point(ABS*LEN_CASE +LEN_CASE//2, ORD*LEN_CASE +LEN_CASE//2),RADIUS,color)
@@ -478,7 +478,7 @@ def display_rook(ABS,ORD,color):
 def display_bishop(ABS,ORD,color):
     """Displays bishop"""
 
-    RADIUS=LEN_CASE//4
+    RADIUS = LEN_CASE//4
 
     affiche_cercle_plein(Point(ABS*LEN_CASE +LEN_CASE//2, ORD*LEN_CASE +LEN_CASE//2+RADIUS),RADIUS//3,color)
     affiche_cercle_plein(Point(ABS*LEN_CASE +LEN_CASE//2, ORD*LEN_CASE +LEN_CASE//2),RADIUS,color)
@@ -487,7 +487,7 @@ def display_bishop(ABS,ORD,color):
 def display_king(ABS,ORD,color):
     """Displays king"""
 
-    RADIUS=LEN_CASE//15
+    RADIUS = LEN_CASE//15
 
     affiche_rectangle_plein(Point(ABS*LEN_CASE +LEN_CASE//10, ORD*LEN_CASE +LEN_CASE//10),Point(ABS*LEN_CASE +9*LEN_CASE//10, ORD*LEN_CASE +3*LEN_CASE//10),color)
     affiche_triangle_plein(Point(ABS*LEN_CASE +3*LEN_CASE//10, ORD*LEN_CASE +4*LEN_CASE//10),Point(ABS*LEN_CASE +LEN_CASE//10, ORD*LEN_CASE +3*LEN_CASE//10),Point(ABS*LEN_CASE +2*LEN_CASE//10, ORD*LEN_CASE +8*LEN_CASE//10),color)
@@ -504,7 +504,7 @@ def display_king(ABS,ORD,color):
 def display_queen(ABS,ORD,color):
     """Displays queen"""
 
-    RADIUS=LEN_CASE//4
+    RADIUS = LEN_CASE//4
 
     affiche_cercle_plein(Point(ABS*LEN_CASE +LEN_CASE//3, ORD*LEN_CASE +LEN_CASE//2),RADIUS,color)
     affiche_cercle_plein(Point(ABS*LEN_CASE +2*LEN_CASE//3, ORD*LEN_CASE +LEN_CASE//2),RADIUS,color)
@@ -547,8 +547,8 @@ def display_valid_squ(G):
     if G.selectedSquare:
         for i in range(len(G.validSquares)):
 
-            ABS=G.validSquares[i][0]
-            ORD=G.validSquares[i][1]
+            ABS = G.validSquares[i][0]
+            ORD = G.validSquares[i][1]
             affiche_rectangle(Point(ABS*LEN_CASE,ORD*LEN_CASE), Point((ABS+1)*LEN_CASE,(1+ORD)*LEN_CASE),ACTIVE_SQU_COLOR,5)
 
 
@@ -614,7 +614,7 @@ while not(end_game(G)) and pas_echap():
                 drop_piece(G)    # drop a piece on the case selcted (2nd clic)
 
             else:
-                G.selectedSquare=()
+                G.selectedSquare = ()
 
 
     # nothing if not on panel
