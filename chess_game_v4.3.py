@@ -357,9 +357,16 @@ def valid_square(G,ABS,ORD):
 
 def move_pawn(G):
     """Stores all the pawn validSquares"""
+    DIR_LIST = ROOK_DIR
+    ABS = G.selectedSquare[0]
+    ORD = G.selectedSquare[1]
+    LOOP=True
 
-    #promotion(G)
-    pass
+    for LIST_NBR in DIR_LIST:
+        move_dir(G,ABS,ORD,LIST_NBR,LOOP)
+
+    promotion(G)
+
 
 
 def move_rook(G):
@@ -449,36 +456,34 @@ def promotion(G):
 
     for column in range (NBR_SQU):
         condition=True
-        if  G.grid[column][7] == PAWN_W :
+        if  G.grid[column][7] == PAWN_W or G.grid[column][0] == PAWN_B :
 
             while condition==True:
                 CHOICE=input("insert which piece you want (ROOK, BISHOP, KNIGHT, QUEEN")
 
                 if CHOICE == "ROOK":
-                    print(G.grid[column][0])
-                    """affiche (1,5) soit cavalier blanc => pas logique """
                     if G.grid[column][0] == PAWN_B:
-                        G.grid[column][0] == ROOK_B
+                        G.grid[column][0] = ROOK_B
                     if G.grid[column][7] == PAWN_W:
-                        G.grid[column][7] == ROOK_W
+                        G.grid[column][7] = ROOK_W
                     condition=False
                 elif CHOICE == "BISHOP":
                     if G.grid[column][0] == PAWN_B:
-                        G.grid[column][0] == BISHOP_B
+                        G.grid[column][0] = BISHOP_B
                     if G.grid[column][7] == PAWN_W:
-                        G.grid[column][7] == BISHOP_W
+                        G.grid[column][7] = BISHOP_W
                     condition=False
                 elif CHOICE == "KNIGHT":
                     if G.grid[column][0] == PAWN_B:
-                        G.grid[column][0] == KNIGHT_B
+                        G.grid[column][0] = KNIGHT_B
                     if G.grid[column][7] == PAWN_W:
-                        G.grid[column][7] == KNIGHT_W
+                        G.grid[column][7] = KNIGHT_W
                     condition=False
                 elif CHOICE =="QUEEN":
                     if G.grid[column][0] == PAWN_B:
-                        G.grid[column][0] == QUEEN_B
+                        G.grid[column][0] = QUEEN_B
                     if G.grid[column][7] == PAWN_W:
-                        G.grid[column][7] == QUEEN_W
+                        G.grid[column][7] = QUEEN_W
                     condition=False
                 else:
                     print("Please try again, it's not a valid piece")
