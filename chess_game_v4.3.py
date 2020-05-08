@@ -358,7 +358,7 @@ def valid_square(G,ABS,ORD):
 def move_pawn(G):
     """Stores all the pawn validSquares"""
 
-    #promotion(G,ABS,ORD)
+    #promotion(G)
     pass
 
 
@@ -445,32 +445,45 @@ def move_dir(G,ABS,ORD,LIST_NBR,LOOP):
             Condition=False
 
 
-def promotion(G,ABS,ORD):
+def promotion(G):
 
     for column in range (NBR_SQU):
-        if G.grid[column][0] == PAWN_B :
-            CHOICE=input("insert which piece you want (ROOK, BISHOP, KNIGHT, QUEEN")
+        condition=True
+        if  G.grid[column][7] == PAWN_W :
 
-            if CHOICE == "ROOK":
-                G.grid[column][0] == ROOK_B
-            elif CHOICE == "BISHOP":
-                G.grid[column][0] == BISHOP_B
-            elif CHOICE == "KNIGHT":
-                G.grid[column][0] == KNIGHT_B
-            elif CHOICE =="QUEEN":
-                G.grid[column][0] == QUEEN_B
+            while condition==True:
+                CHOICE=input("insert which piece you want (ROOK, BISHOP, KNIGHT, QUEEN")
 
-        elif G.grid[column][7] == PAWN_W:
-            CHOICE=input("insert which piece you want (ROOK, BISHOP, KNIGHT, QUEEN")
+                if CHOICE == "ROOK":
+                    print(G.grid[column][0])
+                    """affiche (1,5) soit cavalier blanc => pas logique """
+                    if G.grid[column][0] == PAWN_B:
+                        G.grid[column][0] == ROOK_B
+                    if G.grid[column][7] == PAWN_W:
+                        G.grid[column][7] == ROOK_W
+                    condition=False
+                elif CHOICE == "BISHOP":
+                    if G.grid[column][0] == PAWN_B:
+                        G.grid[column][0] == BISHOP_B
+                    if G.grid[column][7] == PAWN_W:
+                        G.grid[column][7] == BISHOP_W
+                    condition=False
+                elif CHOICE == "KNIGHT":
+                    if G.grid[column][0] == PAWN_B:
+                        G.grid[column][0] == KNIGHT_B
+                    if G.grid[column][7] == PAWN_W:
+                        G.grid[column][7] == KNIGHT_W
+                    condition=False
+                elif CHOICE =="QUEEN":
+                    if G.grid[column][0] == PAWN_B:
+                        G.grid[column][0] == QUEEN_B
+                    if G.grid[column][7] == PAWN_W:
+                        G.grid[column][7] == QUEEN_W
+                    condition=False
+                else:
+                    print("Please try again, it's not a valid piece")
+            return G
 
-            if CHOICE == "ROOK":
-                G.grid[column][7] == ROOK_W
-            elif CHOICE == "BISHOP":
-                G.grid[column][7] == BISHOP_W
-            elif CHOICE == "KNIGHT":
-                G.grid[column][7] == KNIGHT_W
-            elif CHOICE =="QUEEN":
-                G.grid[column][7] == QUEEN_W
 
 
 
