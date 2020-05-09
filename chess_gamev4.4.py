@@ -1,4 +1,4 @@
-﻿############ DISCLAMER ############
+############ DISCLAMER ############
 
 # In this whole program :
 #
