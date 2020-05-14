@@ -48,8 +48,8 @@ BISHOP = 3
 QUEEN = 4
 KING = 5
 
-PAWN_DIR_W = ((0,1),(-1,1),(1,1))                                 # List of all white pawn vectorial possible moves
-PAWN_DIR_B = ((0,-1),(-1,-1),(1,-1))                             # List of all black pawn vectorial possible moves
+PAWN_DIR_W = ((0,1),(-1,1),(1,1))                                       # List of all white pawn vectorial possible moves
+PAWN_DIR_B = ((0,-1),(-1,-1),(1,-1))                                    # List of all black pawn vectorial possible moves
 ROOK_DIR = ((-1,0),(0,1),(1,0),(0,-1))                                  # List of all rook vectorial possible moves
 KNIGHT_DIR = ((-2,-1),(-2,1),(-1,2),(1,2),(2,1),(2,-1),(1,-2),(-1,-2))  # List of all knight vectorial possible moves
 BISHOP_DIR = ((-1,-1),(-1,1),(1,1),(1,-1))                              # List of all bishop vectorial possible moves
@@ -59,9 +59,10 @@ KING_DIR = QUEEN_DIR                                                    # List o
 COLOR_LIST = (WHITE, BLACK)                                             # List of all colors
 PIECE_LIST = (PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING)                  # List of all pieces
 
+# List of all directions for each piece
 MOVE_LIST = {
 
-    "PAWN_W": PAWN_DIR_W,      # List of all directions for each piece
+    "PAWN_W": PAWN_DIR_W,
     "PAWN_B": PAWN_DIR_B,
     ROOK: ROOK_DIR,
     KNIGHT: KNIGHT_DIR,
