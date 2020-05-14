@@ -29,10 +29,10 @@ CIRCLE_RAY = 50
 
 # Game Colors
 
-PANEL_COLOR1 = couleur(130,35,1)        # brown
-PANEL_COLOR2 = couleur(225,224,163)     # beige
-CONFIG_COLOR3 = couleur(37,39,114)      # blue
-ACTIVE_SQU_COLOR = couleur(125,125,125) # grey
+PANEL_COLOR1 = couleur(130, 35, 1)        # brown
+PANEL_COLOR2 = couleur(225, 224, 163)     # beige
+CONFIG_COLOR3 = couleur(37, 39, 114)      # blue
+ACTIVE_SQU_COLOR = couleur(125, 125, 125) # grey
 
 
 # Game Constants
@@ -48,17 +48,28 @@ BISHOP = 3
 QUEEN = 4
 KING = 5
 
-PAWN_DIR_W = ((-1,1),(0,1),(0,2),(1,1))                                 # List of all white pawn vectorial possible moves
-PAWN_DIR_B = ((-1,-1),(0,-1),(0,-2),(1,-1))                             # List of all black pawn vectorial possible moves
+PAWN_DIR_W = ((0,1),(-1,1),(1,1))                                 # List of all white pawn vectorial possible moves
+PAWN_DIR_B = ((0,-1),(-1,-1),(1,-1))                             # List of all black pawn vectorial possible moves
 ROOK_DIR = ((-1,0),(0,1),(1,0),(0,-1))                                  # List of all rook vectorial possible moves
 KNIGHT_DIR = ((-2,-1),(-2,1),(-1,2),(1,2),(2,1),(2,-1),(1,-2),(-1,-2))  # List of all knight vectorial possible moves
 BISHOP_DIR = ((-1,-1),(-1,1),(1,1),(1,-1))                              # List of all bishop vectorial possible moves
 QUEEN_DIR = BISHOP_DIR + ROOK_DIR                                       # List of all queen vectorial possible moves (Bishop + rook ones)
 KING_DIR = QUEEN_DIR                                                    # List of all king vectorial possible moves (Same as queen)
 
-COLOR_LIST = (WHITE, BLACK)                                                     # List of all colors
-PIECE_LIST = (PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING)                          # List of all pieces
-DIR_LIST = (PAWN_DIR_W, ROOK_DIR, KNIGHT_DIR, BISHOP_DIR, QUEEN_DIR, KING_DIR)    # List of all directions for each piece
+COLOR_LIST = (WHITE, BLACK)                                             # List of all colors
+PIECE_LIST = (PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING)                  # List of all pieces
+
+MOVE_LIST = {
+
+    "PAWN_W": PAWN_DIR_W,      # List of all directions for each piece
+    "PAWN_B": PAWN_DIR_B,
+    ROOK: ROOK_DIR,
+    KNIGHT: KNIGHT_DIR,
+    BISHOP: BISHOP_DIR,
+    QUEEN: QUEEN_DIR,
+    KING: KING_DIR
+}
+
 
 FIRST_PLAYER = WHITE    # First payer to play
 
@@ -125,6 +136,14 @@ class Piece():
 
 ### II INITIALIZATION ###
 
+def init_piece():
+    """Initialize class Piece"""
+
+    P = Piece()
+
+    return P
+
+
 def init_game ():
     """Game loaded with class game + all pieces"""
 
@@ -138,33 +157,25 @@ def init_game ():
         G.grid[column][1] = (P.color[0], P.type[0]) #PAWN_W
         G.grid[column][6] = (P.color[1], P.type[0]) #PAWN_B
 
-    for column in range (0,8,7):
+    for column in range (0, 8, 7):
         G.grid[column][0] = (P.color[0], P.type[1]) #ROOK_W
         G.grid[column][7] = (P.color[1], P.type[1]) #ROOK_W
 
-    for column in range (1,8,5):
+    for column in range (1, 8, 5):
         G.grid[column][0] = (P.color[0], P.type[2]) #KNIGHT_W
         G.grid[column][7] = (P.color[1], P.type[2]) #KNIGHT_B
 
-    for column in range (2,8,3):
+    for column in range (2, 8, 3):
         G.grid[column][0] = (P.color[0], P.type[3]) #BISHOP_W
         G.grid[column][7] = (P.color[1], P.type[3]) #BISHOP_B
 
-    G.grid[4][0] = (P.color[0], P.type[4]) #QUEEN_W
-    G.grid[4][7] = (P.color[1], P.type[4]) #QUEEN_B
+    G.grid[3][0] = (P.color[0], P.type[4]) #QUEEN_W
+    G.grid[3][7] = (P.color[1], P.type[4]) #QUEEN_B
 
-    G.grid[3][0] = (P.color[0], P.type[5]) #KING_W
-    G.grid[3][7] = (P.color[1], P.type[5]) #KING_B
+    G.grid[4][0] = (P.color[0], P.type[5]) #KING_W
+    G.grid[4][7] = (P.color[1], P.type[5]) #KING_B
 
     return G
-
-
-def init_piece():
-    """Initialize class Piece"""
-
-    P = Piece()
-
-    return P
 
 
 def end_game(G):
@@ -180,145 +191,127 @@ def end_game(G):
 def get_abs(clic):
     """Return square abs in grid"""
 
-    CLICK_ABS = clic.x // LEN_CASE
+    return clic.x // LEN_CASE
 
-    return CLICK_ABS
 
 def get_ord(clic):
     """Return square ord in grid"""
 
-    CLICK_ORD = clic.y // LEN_CASE
-
-    return CLICK_ORD
+    return clic.y // LEN_CASE
 
 
 def what_is_selected_piece(G):
     """Return piece type and color"""
 
-    Piece = G.grid[G.selectedSquare[0]][G.selectedSquare[1]]
-
-    return Piece
+    return G.grid[G.selectedSquare[0]][G.selectedSquare[1]]
 
 
 def piece_color(COLOR):
     """Change color in CAPITAL letters (initialized like this) in color in lowercase letters (for display color)"""
 
-    color = None
-
     if COLOR == WHITE:
-        color = blanc
+        return blanc
     else:
-        color = noir
-
-    return color
+        return noir
 
 
 def piece_display_type(TYPE):
     """Check what piece it is and return display_'Piece name'"""
 
-    display_type = None
-
     if TYPE == PAWN:
-        display_type = display_pawn
+        return display_pawn
     elif TYPE == ROOK:
-        display_type = display_rook
+        return display_rook
     elif TYPE == KNIGHT:
-        display_type = display_knight
+        return display_knight
     elif TYPE == BISHOP:
-        display_type = display_bishop
+        return display_bishop
     elif TYPE == QUEEN:
-        display_type = display_queen
+        return display_queen
     else:
-        display_type = display_king
-
-    return display_type
+        return display_king
 
 
-def piece_move_type(TYPE):
-    """Check what piece it is and return move_'Piece name'"""
+def promotion_type(G, TYPE):
+    """"""
+    if TYPE == "ROOK":
+        return ROOK
+    elif TYPE == "KNIGHT":
+        return KNIGHT
+    elif TYPE == "BISHOP":
+        return BISHOP
+    elif TYPE == "QUEEN":
+        return QUEEN
 
-    move_type = None
-
-    if TYPE == PAWN:
-        move_type = move_pawn
-    elif TYPE == ROOK:
-        move_type = move_rook
-    elif TYPE == KNIGHT:
-        move_type = move_knight
-    elif TYPE == BISHOP:
-        move_type = move_bishop
-    elif TYPE == QUEEN:
-        move_type = move_queen
-    else:
-        move_type = move_king
-
-    return move_type
-
-
-def is_in_grid(ABS,ORD):
+def is_in_grid(ABS, ORD):
     """Returns True if square is still in the game grid"""
 
-    condition = False
-    if 0<=ABS<NBR_SQU and 0<=ORD<NBR_SQU:
-        condition = True
-
-    return condition
+    return 0<=ABS<NBR_SQU and 0<=ORD<NBR_SQU
 
 
-def are_same_color(G,ABS,ORD):
+def is_in_valid_square(G):
+    """"Check if arrivalSquare is in the validSquare list"""
+
+    for square in G.validSquares:
+        if square == G.arrivalSquare:
+            return True
+
+    return False
+
+
+def are_same_color(G, ABS, ORD):
     """Returns True if selectedPiece's color and entryPiece's color are the same"""
 
-    condition = False
-
-    if what_is_selected_piece(G)[0] == G.grid[ABS][ORD][0]:
-        condition = True
-
-    return condition
+    return what_is_selected_piece(G)[0] == G.grid[ABS][ORD][0]
 
 
 def change_player(G):
     """Changes the Active Player"""
+
     if G.activePlayer == BLACK:
         G.activePlayer = WHITE
-    else :
+    else:
         G.activePlayer = BLACK
 
 
-def empty_pos(G,ABS,ORD):
+def empty_pos(G, ABS, ORD):
     """Returns True if the pos is empty"""
 
-    condition = False
+    return G.grid[ABS][ORD] == NONE
 
-    if G.grid[ABS][ORD] == NONE:
-        condition = True
+def is_pawn_promotion(G):
+    """"""
 
-    return condition
+    for column in range (NBR_SQU):
+        if G.grid[column][7] == (P.color[0], P.type[0]) or G.grid[column][0] == (P.color[1], P.type[0]): #if pawn is on either side
+            return True
 
-
+    return False
 
 
 ### IV DROP PIECES ###
 
-def select_piece(G,ABS,ORD):
+def select_piece(G, ABS, ORD):
     """Stores the piece you click on in G.selectedSquare and display all squares this Piece can go to"""
 
-    G.selectedSquare = (ABS,ORD)
+    G.selectedSquare = (ABS, ORD)
+    valid_square(G, ABS, ORD)
 
-    valid_square(G,ABS,ORD)
 
-
-def store_arrivalSquare(G,ABS,ORD):
+def store_arrivalSquare(G, ABS, ORD):
     """After 2nd click, stores square in G.arrivalSquare"""
 
-    G.arrivalSquare = (ABS,ORD)
+    G.arrivalSquare = (ABS, ORD)
 
 
 def drop_piece(G):
     """Drops the selectedSquare Piece on arrivalSquare then deletes it from selectedSquare"""
 
-    PIECE = what_is_selected_piece(G)
-    G.grid[G.arrivalSquare[0]][G.arrivalSquare[1]] = PIECE
-    promotion(G)
+    G.grid[G.arrivalSquare[0]][G.arrivalSquare[1]] = what_is_selected_piece(G)
+
+    if is_pawn_promotion(G):
+        promotion(G)
+
     delete_piece (G)  # take off the piece (1st piece)
 
 
@@ -330,149 +323,55 @@ def delete_piece(G):
     G.selectedSquare = ()
 
 
-def is_in_valid_square(G):
-    """"Check if arrivalSquare is in the validSquare list"""
-
-    condition = False
-
-    for square in G.validSquares:
-        if square == G.arrivalSquare:
-            condition = True
-
-    return condition
-
-
-def valid_square(G,ABS,ORD):
+def valid_square(G, ABS, ORD):
     """Empty the G.validSquares list and reupdates it with the current selectedPiece"""
 
     G.validSquares = []
 
-    # Stores the piece's name in piece_movetype. If a PAWN is on [ABS][ORD] :
-    # piece_move_type(G.grid[ABS][ORD][1]) will return the text 'move_pawn'
-    PIECE = G.grid[G.selectedSquare[0]][G.selectedSquare[1]] # Stores selectedPieces color/type
-    piece_movetype = piece_move_type(PIECE[1])
+    PIECE = G.grid[G.selectedSquare[0]][G.selectedSquare[1]] # Stores selectedPiece color/type
 
-    # function called here is actually named 'piece_"pieceName"'
-    piece_movetype(G)
+    if PIECE[1] == PAWN:
+        move_pawn(G)
 
-
-def move_pawn(G):
-    """Stores all the pawn validSquares"""
-
-
-    ABS = G.selectedSquare[0]
-    ORD = G.selectedSquare[1]
-    PAWN = G.grid[G.selectedSquare[0]][G.selectedSquare[1]]
-    STARTING_ORD = 1
-
-
-    if PAWN[0] == WHITE:
-        DIR_LIST = PAWN_DIR_W
-        STARTING_ORD = 1
     else:
-        DIR_LIST = PAWN_DIR_B
-        STARTING_ORD = 6
-
-    LST_INDEX = 0
+        move_piece(G)
 
 
-    if is_in_grid(ABS + DIR_LIST[1][0],ORD + DIR_LIST[1][1]) and G.grid[ ABS + DIR_LIST[1][0] ][ ORD + DIR_LIST[1][1] ] == NONE:
-        G.validSquares.append((ABS + DIR_LIST[1][0],ORD + DIR_LIST[1][1]))
+def move_piece(G):
+    """Store all the selectedPiece validSquares (except Pawn)"""
 
-    if is_in_grid(ABS + DIR_LIST[2][0],ORD + DIR_LIST[2][1]) and G.grid[ABS + DIR_LIST[2][0] ][ ORD + DIR_LIST[2][1] ] == NONE and ORD == STARTING_ORD:
-        if  G.grid[ ABS + DIR_LIST[1][0] ][ ORD + DIR_LIST[1][1] ] == NONE:
-            G.validSquares.append((ABS + DIR_LIST[2][0],ORD + DIR_LIST[2][1]))
+    PIECE = G.grid[G.selectedSquare[0]][G.selectedSquare[1]]
+    DIR_LIST = MOVE_LIST[PIECE[1]]
 
-    if is_in_grid(ABS + DIR_LIST[0][0],ORD + DIR_LIST[0][1]):
-        if G.grid[ ABS + DIR_LIST[0][0] ][ ORD + DIR_LIST[0][1] ] != NONE:
-            if not are_same_color(G,ABS + DIR_LIST[0][0],ORD + DIR_LIST[0][1]):
-                G.validSquares.append((ABS + DIR_LIST[0][0],ORD + DIR_LIST[0][1]))
+    ABS, ORD = G.selectedSquare[0], G.selectedSquare[1]
 
-    if is_in_grid(ABS + DIR_LIST[3][0],ORD + DIR_LIST[3][1]):
-        if G.grid[ ABS + DIR_LIST[3][0] ][ ORD + DIR_LIST[3][1] ] != NONE:
-            if not are_same_color(G,ABS + DIR_LIST[3][0],ORD + DIR_LIST[3][1]):
-                G.validSquares.append((ABS + DIR_LIST[3][0],ORD + DIR_LIST[3][1]))
-
-
-def move_rook(G):
-    """Stores all the rook validSquares"""
-
-    DIR_LIST = ROOK_DIR
-    ABS = G.selectedSquare[0]
-    ORD = G.selectedSquare[1]
-    LOOP = True
+    if PIECE[1] == KING or PIECE[1] == KNIGHT:
+        LOOP = False
+    else:
+        LOOP = True
 
     for LIST_NBR in DIR_LIST:
-        move_dir(G,ABS,ORD,LIST_NBR,LOOP)
+        move_dir(G, ABS, ORD, LIST_NBR, LOOP)
 
 
-
-def move_knight(G):
-    """Stores all the knight validSquares"""
-
-    DIR_LIST = KNIGHT_DIR
-    ABS = G.selectedSquare[0]
-    ORD = G.selectedSquare[1]
-    LOOP = False
-
-    for LIST_NBR in DIR_LIST:
-        move_dir(G,ABS,ORD,LIST_NBR,LOOP)
-
-
-def move_bishop(G):
-    """Stores all the rook validSquares"""
-
-    DIR_LIST = BISHOP_DIR
-    ABS = G.selectedSquare[0]
-    ORD = G.selectedSquare[1]
-    LOOP = True
-
-    for LIST_NBR in DIR_LIST:
-        move_dir(G,ABS,ORD,LIST_NBR,LOOP)
-
-
-def move_queen(G):
-    """Stores all the rook validSquares"""
-    DIR_LIST = QUEEN_DIR
-    ABS = G.selectedSquare[0]
-    ORD = G.selectedSquare[1]
-    LOOP=True
-
-    for LIST_NBR in DIR_LIST:
-        move_dir(G,ABS,ORD,LIST_NBR,LOOP)
-
-
-def move_king(G):
-    """Stores all the rook validSquares"""
-
-    DIR_LIST = KING_DIR
-    ABS = G.selectedSquare[0]
-    ORD = G.selectedSquare[1]
-    LOOP=False
-
-    for LIST_NBR in DIR_LIST:
-        move_dir(G,ABS,ORD,LIST_NBR,LOOP)
-
-
-def move_dir(G,ABS,ORD,LIST_NBR,LOOP):
+def move_dir(G, ABS, ORD, LIST_NBR, LOOP):
     """Stores valid positions for one direction"""
 
     ABS += LIST_NBR[0]
     ORD += LIST_NBR[1]
-
     condition = True
 
-    while is_in_grid(ABS,ORD) and condition == True:
+    while is_in_grid(ABS, ORD) and condition == True:
 
         if G.grid[ABS][ORD] == NONE:
-            G.validSquares.append((ABS,ORD))
+            G.validSquares.append((ABS, ORD))
 
         else:
-            if not are_same_color(G,ABS,ORD):
-                G.validSquares.append((ABS,ORD))
+            if not are_same_color(G, ABS, ORD):
+                G.validSquares.append((ABS, ORD))
                 return G
 
-            if are_same_color(G,ABS,ORD):
+            if are_same_color(G, ABS, ORD):
                 return G
 
         if LOOP == True:
@@ -482,42 +381,59 @@ def move_dir(G,ABS,ORD,LIST_NBR,LOOP):
             condition = False
 
 
+def move_pawn(G):
+    """Stores all the pawn validSquares"""
+
+    PAWN = G.grid[G.selectedSquare[0]][G.selectedSquare[1]]
+
+    # Takes the list directions and beginning pos of pawn color
+    if PAWN[0] == WHITE:
+        DIR_LIST = MOVE_LIST["PAWN_W"]
+        STARTING_ORD = 1
+    else:
+        DIR_LIST = MOVE_LIST["PAWN_B"]
+        STARTING_ORD = 6
+
+    ABS, ORD = G.selectedSquare[0], G.selectedSquare[1]
+    # ABS_VECT is pawn_abs + direction vector
+    ABS_VECT, ORD_VECT = ABS + DIR_LIST[0][0], ORD + DIR_LIST[0][1]
+
+
+    # Diagonal move : if there is an ennemy piece
+    for LST_INDEX in range(1,3):
+
+        ABS_VECT, ORD_VECT = ABS + DIR_LIST[0+LST_INDEX][0], ORD + DIR_LIST[0+LST_INDEX][1]
+
+        if is_in_grid(ABS_VECT, ORD_VECT) and G.grid[ABS_VECT][ORD_VECT] != NONE:
+                if not are_same_color(G, ABS_VECT, ORD_VECT):
+                    G.validSquares.append((ABS_VECT, ORD_VECT))
+
+    # Front move : if there is no piece 1 case in front
+    ABS_VECT, ORD_VECT = ABS + DIR_LIST[0][0], ORD + DIR_LIST[0][1]
+    if is_in_grid(ABS_VECT, ORD_VECT) and G.grid[ABS_VECT][ORD_VECT] == NONE:
+        G.validSquares.append((ABS_VECT, ORD_VECT))
+
+        # Beginning move : if there is no piece 2 cases in front. 2x the front vector
+        ABS_VECT, ORD_VECT = ABS + 2*DIR_LIST[0][0], ORD + 2*DIR_LIST[0][1]
+        if ORD == STARTING_ORD and G.grid[ABS_VECT][ORD_VECT] == NONE:
+            G.validSquares.append((ABS_VECT, ORD_VECT))
+
+
 def promotion(G):
+    """"""
 
-    for column in range (NBR_SQU):
-        condition = True
-        if  G.grid[column][7] == (P.color[0], P.type[0]) or G.grid[column][0] == (P.color[1], P.type[0]) :
+    CHOOSING_PIECE = True
 
-            while condition == True:
-                CHOICE = input("insert which piece you want (ROOK, BISHOP, KNIGHT, QUEEN")
+    while CHOOSING_PIECE:
 
-                if CHOICE == "ROOK":
-                    if G.grid[column][0] == (P.color[1], P.type[0]):
-                        G.grid[column][0] = (P.color[1], P.type[1])
-                    if G.grid[column][7] == (P.color[0], P.type[0]):
-                        G.grid[column][7] = (P.color[0], P.type[1])
-                    condition = False
-                elif CHOICE == "BISHOP":
-                    if G.grid[column][0] == (P.color[1], P.type[0]):
-                        G.grid[column][0] = (P.color[1], P.type[2])
-                    if G.grid[column][7] == (P.color[0], P.type[0]):
-                        G.grid[column][7] = (P.color[0], P.type[2])
-                    condition = False
-                elif CHOICE == "KNIGHT":
-                    if G.grid[column][0] == (P.color[1], P.type[0]):
-                        G.grid[column][0] = (P.color[1], P.type[3])
-                    if G.grid[column][7] == (P.color[0], P.type[0]):
-                        G.grid[column][7] = (P.color[0], P.type[3])
-                    condition = False
-                elif CHOICE =="QUEEN":
-                    if G.grid[column][0] == (P.color[1], P.type[0]):
-                        G.grid[column][0] = (P.color[1], P.type[4])
-                    if G.grid[column][7] == (P.color[0], P.type[0]):
-                        G.grid[column][7] = (P.color[0], P.type[4])
-                    condition = False
-                else:
-                    print("Please try again, it's not a valid piece")
+        PIECE_TYPE = input("insert which piece you want (ROOK, KNIGHT, BISHOP, QUEEN")
+
+        if PIECE_TYPE == "ROOK" or PIECE_TYPE == "KNIGHT" or PIECE_TYPE == "BISHOP" or PIECE_TYPE == "QUEEN":
+            G.grid[G.arrivalSquare[0]][G.arrivalSquare[1]] = (G.activePlayer, promotion_type(G, PIECE_TYPE))
             return G
+
+        else :
+            print("Please try again, it's not a valid piece")
 
 
 
@@ -527,22 +443,32 @@ def promotion(G):
 def display_panel():
     """Show the panel with 2 different colors for each case"""
 
-    for ABS in range(0,NBR_SQU):
-        for ORD in range(0,NBR_SQU):
+    for ABS in range(0, NBR_SQU):
+        for ORD in range(0, NBR_SQU):
             if ABS%2 == 0 and ORD%2 == 0 or ABS%2 != 0 and ORD%2 != 0:
             # If square abs and ord are even or if square abs and ord are odd
-                affiche_rectangle_plein(Point(LEN_CASE*ABS,LEN_CASE*ORD),Point(LEN_CASE*(ABS+1),LEN_CASE*(ORD+1)),PANEL_COLOR1)
+                affiche_rectangle_plein(Point(LEN_CASE*ABS, LEN_CASE*ORD), Point(LEN_CASE*(ABS+1), LEN_CASE*(ORD+1)), PANEL_COLOR1)
 
             else :
-                affiche_rectangle_plein(Point(LEN_CASE*ABS,LEN_CASE*ORD),Point(LEN_CASE*(ABS+1),LEN_CASE*(ORD+1)),PANEL_COLOR2)
+                affiche_rectangle_plein(Point(LEN_CASE*ABS, LEN_CASE*ORD), Point(LEN_CASE*(ABS+1), LEN_CASE*(ORD+1)), PANEL_COLOR2)
 
 
+def display_config_panel(G):
+    """Shows meter, change color, timer, numer of piece.."""
 
-def display_piece(G,P):
+    affiche_rectangle_plein(Point(LEN_GRID, 0), Point(LEN_GAME, LEN_GRID), CONFIG_COLOR3)
+
+
+def display_active_player(G):
+    """"""
+    affiche_cercle_plein(Point(LEN_GRID+LEN_PANEL//2, LEN_GRID//2), CIRCLE_RAY, piece_color(G.activePlayer))
+
+
+def display_piece(G):
     """Display all game pieces, including their color and type"""
 
-    for ABS in range (0,NBR_SQU):
-        for ORD in range (0,NBR_SQU):
+    for ABS in range (0, NBR_SQU):
+        for ORD in range (0, NBR_SQU):
             if G.grid[ABS][ORD] != NONE:
                 PIECE = G.grid[ABS][ORD]
                 color = piece_color(PIECE[0])
@@ -553,10 +479,10 @@ def display_piece(G,P):
                 display_type = piece_display_type(PIECE[1])
 
                 # function called here is actually named 'piece_"pieceName"'
-                display_type(ABS,ORD,color)
+                display_type(ABS, ORD, color)
 
 
-def display_pawn(ABS,ORD,color):
+def display_pawn(ABS, ORD, color):
     """Displays pawn"""
 
     RADIUS = LEN_CASE//6
@@ -565,7 +491,8 @@ def display_pawn(ABS,ORD,color):
     affiche_cercle_plein(Point(ABS*LEN_CASE +LEN_CASE//2, ORD*LEN_CASE +LEN_CASE//2),RADIUS,color)
     affiche_cercle_plein(Point(ABS*LEN_CASE +LEN_CASE//2, ORD*LEN_CASE +LEN_CASE//2-RADIUS),RADIUS+RADIUS//3,color)
 
-def display_rook(ABS,ORD,color):
+
+def display_rook(ABS, ORD, color):
     """Displays rook"""
 
     affiche_rectangle_plein(Point(ABS*LEN_CASE +LEN_CASE//10, ORD*LEN_CASE +LEN_CASE//10),Point(ABS*LEN_CASE +9*LEN_CASE//10, ORD*LEN_CASE +2*LEN_CASE//10),color)
@@ -576,7 +503,24 @@ def display_rook(ABS,ORD,color):
     affiche_rectangle_plein(Point(ABS*LEN_CASE +5*LEN_CASE//9, ORD*LEN_CASE +8*LEN_CASE//10),Point(ABS*LEN_CASE +6*LEN_CASE//9, ORD*LEN_CASE +9*LEN_CASE//10),color)
     affiche_rectangle_plein(Point(ABS*LEN_CASE +7*LEN_CASE//9, ORD*LEN_CASE +8*LEN_CASE//10),Point(ABS*LEN_CASE +8*LEN_CASE//9, ORD*LEN_CASE +9*LEN_CASE//10),color)
 
-def display_bishop(ABS,ORD,color):
+
+def display_knight(ABS, ORD, color):
+    """Displays knight"""
+
+    if color == blanc:
+        opposite = noir
+    else:
+        opposite = blanc
+
+    affiche_rectangle_plein(Point(ABS*LEN_CASE +LEN_CASE//2, ORD*LEN_CASE +LEN_CASE//10),Point(ABS*LEN_CASE +9*LEN_CASE//10, ORD*LEN_CASE +LEN_CASE//2),color)
+    affiche_rectangle_plein(Point(ABS*LEN_CASE +LEN_CASE//10, ORD*LEN_CASE +LEN_CASE//2),Point(ABS*LEN_CASE +9*LEN_CASE//10, ORD*LEN_CASE +7*LEN_CASE//10),color)
+    affiche_rectangle_plein(Point(ABS*LEN_CASE +LEN_CASE//10, ORD*LEN_CASE +9*LEN_CASE//20),Point(ABS*LEN_CASE +3*LEN_CASE//10, ORD*LEN_CASE +LEN_CASE//2),color)
+    affiche_triangle_plein(Point(ABS*LEN_CASE +3*LEN_CASE//10, ORD*LEN_CASE +LEN_CASE//2),Point(ABS*LEN_CASE +3*LEN_CASE//10, ORD*LEN_CASE +9*LEN_CASE//20),Point(ABS*LEN_CASE +LEN_CASE//2, ORD*LEN_CASE +LEN_CASE//2),color)
+    affiche_triangle_plein(Point(ABS*LEN_CASE +6*LEN_CASE//10, ORD*LEN_CASE +7*LEN_CASE//10),Point(ABS*LEN_CASE +8*LEN_CASE//10, ORD*LEN_CASE + 7*LEN_CASE//10),Point(ABS*LEN_CASE +7*LEN_CASE//10, ORD*LEN_CASE +8*LEN_CASE//10),color)
+    affiche_cercle_plein(Point(ABS*LEN_CASE +LEN_CASE//2, ORD*LEN_CASE +6*LEN_CASE//10),LEN_CASE//25,opposite)
+
+
+def display_bishop(ABS, ORD, color):
     """Displays bishop"""
 
     RADIUS = LEN_CASE//4
@@ -585,7 +529,8 @@ def display_bishop(ABS,ORD,color):
     affiche_cercle_plein(Point(ABS*LEN_CASE +LEN_CASE//2, ORD*LEN_CASE +LEN_CASE//2),RADIUS,color)
     affiche_rectangle_plein(Point(ABS*LEN_CASE +LEN_CASE//10, ORD*LEN_CASE +LEN_CASE//10),Point(ABS*LEN_CASE +9*LEN_CASE//10, ORD*LEN_CASE +3*LEN_CASE//10),color)
 
-def display_king(ABS,ORD,color):
+
+def display_queen(ABS, ORD, color):
     """Displays king"""
 
     RADIUS = LEN_CASE//15
@@ -602,7 +547,7 @@ def display_king(ABS,ORD,color):
     affiche_cercle_plein(Point(ABS*LEN_CASE +8*LEN_CASE//10, ORD*LEN_CASE +8*LEN_CASE//10),RADIUS,color)
 
 
-def display_queen(ABS,ORD,color):
+def display_king(ABS,ORD,color):
     """Displays queen"""
 
     RADIUS = LEN_CASE//4
@@ -611,33 +556,6 @@ def display_queen(ABS,ORD,color):
     affiche_cercle_plein(Point(ABS*LEN_CASE +2*LEN_CASE//3, ORD*LEN_CASE +LEN_CASE//2),RADIUS,color)
     affiche_rectangle_plein(Point(ABS*LEN_CASE +LEN_CASE//5, ORD*LEN_CASE +LEN_CASE//10),Point(ABS*LEN_CASE +4*LEN_CASE//5, ORD*LEN_CASE +2*LEN_CASE//5),color)
     affiche_rectangle_plein(Point(ABS*LEN_CASE +3*LEN_CASE//7, ORD*LEN_CASE +LEN_CASE//2),Point(ABS*LEN_CASE +4*LEN_CASE//7, ORD*LEN_CASE +17*LEN_CASE//20),color)
-
-
-def display_knight(ABS,ORD,color):
-    """Displays knight"""
-
-    if color == blanc:
-        opposite = noir
-    else:
-        opposite = blanc
-
-    affiche_rectangle_plein(Point(ABS*LEN_CASE +LEN_CASE//2, ORD*LEN_CASE +LEN_CASE//10),Point(ABS*LEN_CASE +9*LEN_CASE//10, ORD*LEN_CASE +LEN_CASE//2),color)
-    affiche_rectangle_plein(Point(ABS*LEN_CASE +LEN_CASE//10, ORD*LEN_CASE +LEN_CASE//2),Point(ABS*LEN_CASE +9*LEN_CASE//10, ORD*LEN_CASE +7*LEN_CASE//10),color)
-    affiche_rectangle_plein(Point(ABS*LEN_CASE +LEN_CASE//10, ORD*LEN_CASE +9*LEN_CASE//20),Point(ABS*LEN_CASE +3*LEN_CASE//10, ORD*LEN_CASE +LEN_CASE//2),color)
-    affiche_triangle_plein(Point(ABS*LEN_CASE +3*LEN_CASE//10, ORD*LEN_CASE +LEN_CASE//2),Point(ABS*LEN_CASE +3*LEN_CASE//10, ORD*LEN_CASE +9*LEN_CASE//20),Point(ABS*LEN_CASE +LEN_CASE//2, ORD*LEN_CASE +LEN_CASE//2),color)
-    affiche_triangle_plein(Point(ABS*LEN_CASE +6*LEN_CASE//10, ORD*LEN_CASE +7*LEN_CASE//10),Point(ABS*LEN_CASE +8*LEN_CASE//10, ORD*LEN_CASE + 7*LEN_CASE//10),Point(ABS*LEN_CASE +7*LEN_CASE//10, ORD*LEN_CASE +8*LEN_CASE//10),color)
-    affiche_cercle_plein(Point(ABS*LEN_CASE +LEN_CASE//2, ORD*LEN_CASE +6*LEN_CASE//10),LEN_CASE//25,opposite)
-
-
-def display_config_panel(G):
-    """Shows meter, change color, timer, numer of piece.."""
-
-    affiche_rectangle_plein(Point(LEN_GRID,0),Point(LEN_GAME,LEN_GRID),CONFIG_COLOR3)
-
-def display_active_player(G):
-
-    color = piece_color(G.activePlayer)
-    affiche_cercle_plein(Point(LEN_GRID+LEN_PANEL//2,LEN_GRID//2),CIRCLE_RAY,color)
 
 
 def display_piece_selection(G):
@@ -651,10 +569,9 @@ def display_valid_squ(G):
     """Draw a box around validSquares"""
 
     if G.selectedSquare:
-        for i in range(len(G.validSquares)):
+        for VALID_SQU in range(len(G.validSquares)):
 
-            ABS = G.validSquares[i][0]
-            ORD = G.validSquares[i][1]
+            ABS, ORD = G.validSquares[VALID_SQU][0], G.validSquares[VALID_SQU][1]
 
             CIRCLE_CENTER = Point(ABS*LEN_CASE + LEN_CASE//2,ORD*LEN_CASE + LEN_CASE//2)
             affiche_cercle_plein(CIRCLE_CENTER,CIRCLE_RAY//3,ACTIVE_SQU_COLOR)
@@ -666,7 +583,7 @@ def display_game(G):
     display_panel()
     display_config_panel(G)
     display_active_player(G)
-    display_piece(G,P)
+    display_piece(G)
     display_piece_selection(G)
     display_valid_squ(G)
 
@@ -681,8 +598,8 @@ init_fenetre(LEN_GAME,LEN_GRID,"Chess Game")
 affiche_auto_off()
 
 P = init_piece()
-
 G = init_game()
+
 display_game(G)
 
 
@@ -691,9 +608,7 @@ while not(end_game(G)) and pas_echap():
     clic = wait_clic()
     if clic.x < LEN_GRID: # we are on the panel
 
-        ABS = get_abs(clic)
-        ORD = get_ord(clic)
-
+        ABS, ORD = get_abs(clic), get_ord(clic)
 
         if G.grid[ABS][ORD] != NONE and not(G.selectedSquare) :
             if G.grid[ABS][ORD][0] == G.activePlayer:
@@ -701,11 +616,13 @@ while not(end_game(G)) and pas_echap():
 
 
         elif G.selectedSquare: #no piece and a piece selected before
+
             store_arrivalSquare(G,ABS,ORD)
 
             if is_in_valid_square(G):
                 drop_piece(G)    # drop a piece on the case selcted (2nd clic)
                 change_player(G)
+
             else:
                 G.selectedSquare = ()
 
