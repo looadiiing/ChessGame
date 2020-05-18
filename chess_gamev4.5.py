@@ -335,6 +335,8 @@ def valid_square(G, ABS, ORD):
 
     if PIECE[1] == PAWN:
         move_pawn(G)
+    elif PIECE[1] == KING:
+        move_king(G)
 
     else:
         move_piece(G)
@@ -422,8 +424,15 @@ def move_pawn(G):
             G.validSquares.append((ABS_VECT, ORD_VECT))
 
 
+def move_king(G):
+    """Stores all the king validSquares"""
+
+    pass
+
+
+
 def promotion(G):
-    """allow you to change your pawn's type if you arrived at the end of the grid"""
+    """Allow you to change your pawn's type if you arrived at the end of the grid"""
 
     CHOOSING_PIECE = True
 
@@ -458,64 +467,56 @@ def display_panel():
 def display_config_panel(G):
     """Shows meter, change color,player, timer, numer of piece.."""
 
-    affiche_rectangle_plein(Point(LEN_GRID, 0), Point(LEN_GAME, LEN_GRID), CONFIG_COLOR3)
-    affiche_ligne(Point(LEN_GRID,0),Point(LEN_GRID,LEN_GRID),noir,7)
-    display_two_players(G)
+    affiche_rectangle_plein(Point(LEN_GRID,0), Point(LEN_GAME,LEN_GRID), CONFIG_COLOR3)
+    affiche_ligne(Point(LEN_GRID,0), Point(LEN_GRID,LEN_GRID), noir, 7)
 
+    display_two_players(G)
+    display_active_player(G)
 
 def display_two_players(G):
-    """display player according to color and number"""
+    """Display the 2 players with their own color"""
 
-    condition=True
-    a=0
-    while condition==True:
-        if a==0:
-            """display "PLAYER 2" """
-            DOWN=0
-            color=noir
-            display_PLAYER(G,DOWN,color)
-            display_DEUX()
-        else:
-            """display "PLAYER 1" """
-            DOWN=350
-            color=blanc
-            display_PLAYER(G,DOWN,color)
-            display_UN()
-            condition=False
-        a=+1
+    # Displays "PLAYER 2"
+    display_player(G, 0, noir)
+    display_two()
 
-def display_PLAYER(G,DOWN,color):
-    """display "PLAYER" """
+    # Displays "PLAYER 1"
+    display_player(G, 350, blanc)
+    display_one()
 
-    """P"""
-    affiche_ligne(Point(LEN_GRID+30,580-DOWN),Point(LEN_GRID+30,550-DOWN),color,3)
-    affiche_ligne(Point(LEN_GRID+45,580-DOWN),Point(LEN_GRID+45,565-DOWN),color,3)
-    affiche_ligne(Point(LEN_GRID+30,580-DOWN),Point(LEN_GRID+45,580-DOWN),color,3)
-    affiche_ligne(Point(LEN_GRID+30,565-DOWN),Point(LEN_GRID+45,565-DOWN),color,3)
 
-    """L"""
-    affiche_ligne(Point(LEN_GRID+55,580-DOWN),Point(LEN_GRID+55,550-DOWN),color,3)
-    affiche_ligne(Point(LEN_GRID+55,550-DOWN),Point(LEN_GRID+70,550-DOWN),color,3)
+def display_player(G, DOWN, color):
+    """Displays "PLAYER" in config panel. 'DOWN' is how much pixel needs the text to be down"""
 
-    """A"""
-    affiche_ligne(Point(LEN_GRID+80,580-DOWN),Point(LEN_GRID+80,550-DOWN),color,3)
-    affiche_ligne(Point(LEN_GRID+95,580-DOWN),Point(LEN_GRID+95,550-DOWN),color,3)
-    affiche_ligne(Point(LEN_GRID+80,580-DOWN),Point(LEN_GRID+95,580-DOWN),color,3)
-    affiche_ligne(Point(LEN_GRID+80,565-DOWN),Point(LEN_GRID+95,565-DOWN),color,3)
+    # P
+    affiche_ligne(Point(LEN_GRID+30,580-DOWN), Point(LEN_GRID+30,550-DOWN), color, 3)
+    affiche_ligne(Point(LEN_GRID+45,580-DOWN), Point(LEN_GRID+45,565-DOWN), color, 3)
+    affiche_ligne(Point(LEN_GRID+30,580-DOWN), Point(LEN_GRID+45,580-DOWN), color, 3)
+    affiche_ligne(Point(LEN_GRID+30,565-DOWN), Point(LEN_GRID+45,565-DOWN), color, 3)
 
-    """Y"""
-    affiche_ligne(Point(LEN_GRID+105,580-DOWN),Point(LEN_GRID+105,565-DOWN),color,3)
-    affiche_ligne(Point(LEN_GRID+112,565-DOWN),Point(LEN_GRID+112,550-DOWN),color,3)
-    affiche_ligne(Point(LEN_GRID+120,580-DOWN),Point(LEN_GRID+120,565-DOWN),color,3)
-    affiche_ligne(Point(LEN_GRID+105,565-DOWN),Point(LEN_GRID+120,565-DOWN),color,3)
+    # L
+    affiche_ligne(Point(LEN_GRID+55,580-DOWN), Point(LEN_GRID+55,550-DOWN), color, 3)
+    affiche_ligne(Point(LEN_GRID+55,550-DOWN), Point(LEN_GRID+70,550-DOWN), color, 3)
 
-    """E"""
-    affiche_ligne(Point(LEN_GRID+130,580-DOWN),Point(LEN_GRID+130,550-DOWN),color,3)
-    affiche_ligne(Point(LEN_GRID+130,580-DOWN),Point(LEN_GRID+145,580-DOWN),color,3)
-    affiche_ligne(Point(LEN_GRID+130,565-DOWN),Point(LEN_GRID+145,565-DOWN),color,3)
-    affiche_ligne(Point(LEN_GRID+130,550-DOWN),Point(LEN_GRID+145,550-DOWN),color,3)
+    # A
+    affiche_ligne(Point(LEN_GRID+80,580-DOWN), Point(LEN_GRID+80,550-DOWN), color, 3)
+    affiche_ligne(Point(LEN_GRID+95,580-DOWN), Point(LEN_GRID+95,550-DOWN), color, 3)
+    affiche_ligne(Point(LEN_GRID+80,580-DOWN), Point(LEN_GRID+95,580-DOWN), color, 3)
+    affiche_ligne(Point(LEN_GRID+80,565-DOWN), Point(LEN_GRID+95,565-DOWN), color, 3)
 
-    """R"""
+    # Y
+    affiche_ligne(Point(LEN_GRID+105,580-DOWN), Point(LEN_GRID+105,565-DOWN), color, 3)
+    affiche_ligne(Point(LEN_GRID+112,565-DOWN), Point(LEN_GRID+112,550-DOWN), color, 3)
+    affiche_ligne(Point(LEN_GRID+120,580-DOWN), Point(LEN_GRID+120,565-DOWN), color, 3)
+    affiche_ligne(Point(LEN_GRID+105,565-DOWN), Point(LEN_GRID+120,565-DOWN), color, 3)
+
+    # E
+    affiche_ligne(Point(LEN_GRID+130,580-DOWN), Point(LEN_GRID+130,550-DOWN), color, 3)
+    affiche_ligne(Point(LEN_GRID+130,580-DOWN), Point(LEN_GRID+145,580-DOWN), color, 3)
+    affiche_ligne(Point(LEN_GRID+130,565-DOWN), Point(LEN_GRID+145,565-DOWN), color, 3)
+    affiche_ligne(Point(LEN_GRID+130,550-DOWN), Point(LEN_GRID+145,550-DOWN), color, 3)
+
+    # R
     affiche_ligne(Point(LEN_GRID+155,580-DOWN),Point(LEN_GRID+155,550-DOWN),color,3)
     affiche_ligne(Point(LEN_GRID+170,580-DOWN),Point(LEN_GRID+170,565-DOWN),color,3)
     affiche_ligne(Point(LEN_GRID+155,580-DOWN),Point(LEN_GRID+170,580-DOWN),color,3)
@@ -523,26 +524,26 @@ def display_PLAYER(G,DOWN,color):
     affiche_ligne(Point(LEN_GRID+155,565-DOWN),Point(LEN_GRID+170,550-DOWN),color,3)
 
 
-def display_DEUX():
-    """display 2"""
+def display_two():
+    """Displays 2"""
 
-    affiche_ligne(Point(LEN_GRID+85,510),Point(LEN_GRID+85,525),noir,3)
-    affiche_ligne(Point(LEN_GRID+115,540),Point(LEN_GRID+115,525),noir,3)
-    affiche_ligne(Point(LEN_GRID+85,540),Point(LEN_GRID+115,540),noir,3)
-    affiche_ligne(Point(LEN_GRID+115,525),Point(LEN_GRID+85,525),noir,3)
-    affiche_ligne(Point(LEN_GRID+115,510),Point(LEN_GRID+85,510),noir,3)
+    affiche_ligne(Point(LEN_GRID+85,510), Point(LEN_GRID+85,525), noir, 3)
+    affiche_ligne(Point(LEN_GRID+115,540), Point(LEN_GRID+115,525), noir, 3)
+    affiche_ligne(Point(LEN_GRID+85,540), Point(LEN_GRID+115,540), noir, 3)
+    affiche_ligne(Point(LEN_GRID+115,525), Point(LEN_GRID+85,525), noir, 3)
+    affiche_ligne(Point(LEN_GRID+115,510), Point(LEN_GRID+85,510), noir, 3)
 
 
-def display_UN():
-    """display 1"""
+def display_one():
+    """Displays 1"""
 
-    affiche_ligne(Point(LEN_GRID+100,190),Point(LEN_GRID+100,160),blanc,3)
-    affiche_ligne(Point(LEN_GRID+85,175),Point(LEN_GRID+100,190),blanc,3)
-    affiche_ligne(Point(LEN_GRID+115,160),Point(LEN_GRID+85,160),blanc,3)
+    affiche_ligne(Point(LEN_GRID+100,190), Point(LEN_GRID+100,160), blanc, 3)
+    affiche_ligne(Point(LEN_GRID+85,175), Point(LEN_GRID+100,190), blanc, 3)
+    affiche_ligne(Point(LEN_GRID+115,160), Point(LEN_GRID+85,160), blanc, 3)
 
 
 def display_active_player(G):
-    """display turn, which color is playing"""
+    """Displas which color is playing"""
 
     affiche_cercle_plein(Point(LEN_GRID+LEN_PANEL//2, LEN_GRID//2), CIRCLE_RAY, piece_color(G.activePlayer))
     affiche_cercle(Point(LEN_GRID+LEN_PANEL//2, LEN_GRID//2), CIRCLE_RAY+1,ACTIVE_SQU_COLOR,5)
@@ -666,7 +667,6 @@ def display_game(G):
 
     display_panel()
     display_config_panel(G)
-    display_active_player(G)
     display_piece(G)
     display_piece_selection(G)
     display_valid_squ(G)
