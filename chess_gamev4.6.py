@@ -31,8 +31,11 @@ CIRCLE_RAY = 50
 
 PANEL_COLOR1 = couleur(130, 35, 1)        # brown
 PANEL_COLOR2 = couleur(225, 224, 163)     # beige
-CONFIG_COLOR3 = couleur(170,100,70)      # ligth brown
+CONFIG_COLOR3 = couleur(170,100,70)       # ligth brown
 ACTIVE_SQU_COLOR = couleur(125, 125, 150) # grey
+SHADOW_1 = couleur(64,18,0)               # dark brown
+SHADOW_2 = couleur(206,201,104)           # dark beige
+CIRCLE_SHADOW_2 = couleur(156,153,52)     # for the display_valid_squ
 
 
 # Game Constants
@@ -703,7 +706,6 @@ def display_piece_selection(G):
     if G.selectedSquare:
         affiche_rectangle(Point(G.selectedSquare[0]*LEN_CASE,G.selectedSquare[1]*LEN_CASE),Point((G.selectedSquare[0]+1)*LEN_CASE,(G.selectedSquare[1]+1)*LEN_CASE),rouge,5)
 
-
 def display_valid_squ(G):
     """Draw a box around validSquares"""
 
@@ -713,7 +715,15 @@ def display_valid_squ(G):
             ABS, ORD = G.validSquares[VALID_SQU][0], G.validSquares[VALID_SQU][1]
 
             CIRCLE_CENTER = Point(ABS*LEN_CASE + LEN_CASE//2,ORD*LEN_CASE + LEN_CASE//2)
-            affiche_cercle_plein(CIRCLE_CENTER,CIRCLE_RAY//3,ACTIVE_SQU_COLOR)
+
+            if ABS%2 == 0 and ORD%2 == 0 or ABS%2 != 0 and ORD%2 != 0:
+                    # If square abs and ord are even or if square abs and ord are odd
+                affiche_cercle_plein(CIRCLE_CENTER,CIRCLE_RAY//3,SHADOW_1)     # For dark brown
+                affiche_cercle(CIRCLE_CENTER,CIRCLE_RAY//3,noir)
+
+            else :
+                affiche_cercle_plein(CIRCLE_CENTER,CIRCLE_RAY//3,SHADOW_2)      # For dark beige
+                affiche_cercle(CIRCLE_CENTER,CIRCLE_RAY//3,CIRCLE_SHADOW_2)
 
 
 def display_game(G):
