@@ -159,10 +159,26 @@ def init_game ():
 
 def end_game(G):
     """End of the game if Mate"""
+    if not is_king(G,WHITE):
+        print("LES NOIRS ONT GAGNES")
+        display_winner(G,0)
+        return True
+    elif not is_king(G,BLACK):
+        print("LES BLANCS ONT GAGNES")
+        display_winner(G,350)
+        return True
+    else:
+        return False
 
-    pass
 
 
+def is_king(G,COLOR):
+    """check if one king is on board"""
+    for ABS in range(NBR_SQU):
+        for ORD in range(NBR_SQU):
+            if  G.grid[ABS][ORD] == (COLOR, KING):
+                return True
+    return False
 
 
 ### III UTILITIES ###
@@ -547,6 +563,44 @@ def display_one():
     affiche_ligne(Point(LEN_GRID+100,190), Point(LEN_GRID+100,160), blanc, 3)
     affiche_ligne(Point(LEN_GRID+85,175), Point(LEN_GRID+100,190), blanc, 3)
     affiche_ligne(Point(LEN_GRID+115,160), Point(LEN_GRID+85,160), blanc, 3)
+
+def display_winner(G,DOWN):
+    print("g")
+    color=jaune
+
+    """W"""
+    affiche_ligne(Point(LEN_GRID+30,500-DOWN),Point(LEN_GRID+35,470-DOWN),color,3)
+    affiche_ligne(Point(LEN_GRID+40,500-DOWN),Point(LEN_GRID+35,470-DOWN),color,3)
+    affiche_ligne(Point(LEN_GRID+40,500-DOWN),Point(LEN_GRID+45,470-DOWN),color,3)
+    affiche_ligne(Point(LEN_GRID+50,500-DOWN),Point(LEN_GRID+45,470-DOWN),color,3)
+
+    """I"""
+    affiche_ligne(Point(LEN_GRID+60,500-DOWN),Point(LEN_GRID+75,500-DOWN),color,3)
+    affiche_ligne(Point(LEN_GRID+67,500-DOWN),Point(LEN_GRID+67,470-DOWN),color,3)
+    affiche_ligne(Point(LEN_GRID+60,470-DOWN),Point(LEN_GRID+75,470-DOWN),color,3)
+
+    """N"""
+    affiche_ligne(Point(LEN_GRID+85,500-DOWN),Point(LEN_GRID+85,470-DOWN),color,3)
+    affiche_ligne(Point(LEN_GRID+85,500-DOWN),Point(LEN_GRID+100,470-DOWN),color,3)
+    affiche_ligne(Point(LEN_GRID+100,500-DOWN),Point(LEN_GRID+100,470-DOWN),color,3)
+
+    """N"""
+    affiche_ligne(Point(LEN_GRID+110,500-DOWN),Point(LEN_GRID+110,470-DOWN),color,3)
+    affiche_ligne(Point(LEN_GRID+110,500-DOWN),Point(LEN_GRID+125,470-DOWN),color,3)
+    affiche_ligne(Point(LEN_GRID+125,500-DOWN),Point(LEN_GRID+125,470-DOWN),color,3)
+
+    """E"""
+    affiche_ligne(Point(LEN_GRID+135,500-DOWN),Point(LEN_GRID+135,470-DOWN),color,3)
+    affiche_ligne(Point(LEN_GRID+135,500-DOWN),Point(LEN_GRID+150,500-DOWN),color,3)
+    affiche_ligne(Point(LEN_GRID+135,485-DOWN),Point(LEN_GRID+150,485-DOWN),color,3)
+    affiche_ligne(Point(LEN_GRID+135,470-DOWN),Point(LEN_GRID+150,470-DOWN),color,3)
+
+    """R"""
+    affiche_ligne(Point(LEN_GRID+160,500-DOWN),Point(LEN_GRID+160,470-DOWN),color,3)
+    affiche_ligne(Point(LEN_GRID+175,500-DOWN),Point(LEN_GRID+175,485-DOWN),color,3)
+    affiche_ligne(Point(LEN_GRID+160,500-DOWN),Point(LEN_GRID+175,500-DOWN),color,3)
+    affiche_ligne(Point(LEN_GRID+160,485-DOWN),Point(LEN_GRID+175,485-DOWN),color,3)
+    affiche_ligne(Point(LEN_GRID+160,485-DOWN),Point(LEN_GRID+175,470-DOWN),color,3)
 
 
 def display_active_player(G):
