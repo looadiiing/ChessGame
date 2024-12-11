@@ -1,0 +1,438 @@
+from graphics import *
+
+
+############ DISCLAMER ############
+
+# In this whole program :
+#
+# LEN        --> Length
+# SQU        --> Case
+# PIX_ABS        --> Abscissa
+# PIX_ORD        --> Ordinate
+
+# ABS    --> Abscissa of square
+# ORD    --> Ordinate of square
+
+
+
+from graphics import *
+
+
+### constants ###
+
+
+
+
+#info de grille
+LEN_PANEL = 200
+LEN_GRID = 600
+NBR_SQU = 8
+LEN_CASE = LEN_GRID // NBR_SQU
+LEN_MID_CASE = LEN_CASE // 2
+PANEL_COLOR1 = couleur(130,35,1) #brown
+PANEL_COLOR2 = couleur(225,224,163) #beige
+CONFIG_COLOR3 = couleur(37,39,114) #blue
+
+RAY_PIECE = 25
+
+NONE = 0
+WHITE = 1
+BLACK = 2
+PAWN = 3
+KNIGHT = 4
+BISHOP = 5
+ROOK = 6
+QUEEN = 7
+KING = 8
+
+
+
+ROOK_DIR=[[1,0],[0,1],[0,-1],[-1,0]]
+
+FIRST_PLAYER = WHITE
+
+### I CLASS ###
+
+class Game():
+
+
+    __slots__ = (
+
+        "grid",
+        "activePlayer",
+        "selectedSquare",
+        "arrivalSquare",
+        "piece"
+    )
+
+
+    def __init__(self):
+
+        self.grid = [[NONE] * NBR_SQU for nbr_square in range(NBR_SQU)]
+        self.activePlayer = FIRST_PLAYER
+        self.selectedSquare = (None)
+        self.arrivalSquare = (None)
+        self.piece =Piece()
+
+
+class Piece():
+
+
+    __slots__= (
+
+        "color",
+        "type"
+    )
+
+
+    def __init__(self):
+
+        self.color = [WHITE, BLACK]
+        self.type = [PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING]
+
+
+
+
+### II INITIALIZATION ###
+
+def init_game ():
+    """game loaded with panel and piece (version 1, same piece then chess piece) """
+    G = Game()
+
+    for column in range (NBR_SQU):
+
+        G.grid[column][1]=PAWN_W
+        G.grid[column][6]=PAWN_B
+
+    for column in range (0,8,7):
+
+        G.grid[column][0]=ROOK_W
+        G.grid[column][7]=ROOK_B
+
+    for column in range (1,8,5):
+
+        G.grid[column][0]=KNIGHT_W
+        G.grid[column][7]=KNIGHT_B
+
+    for column in range (2,8,3):
+
+        G.grid[column][0]=BISHOP_W
+        G.grid[column][7]=BISHOP_B
+
+    G.grid[4][0]=QUEEN_W
+    G.grid[4][7]=QUEEN_B
+
+    G.grid[3][0]=KING_W
+    G.grid[3][7]=KING_B
+    return G
+
+
+def init_piece():
+    P = Piece()
+
+
+    return P
+def end_game(G):
+    """ end of the game if Mate"""
+
+### III UTILITIES ###
+
+def get_abs(clic):
+    """return abs in grid"""
+
+    CLICK_ABS = clic.x//LEN_CASE
+
+    return CLICK_ABS
+
+def get_ord(clic):
+    """return ord in grid"""
+
+    CLICK_ORD = clic.y//LEN_CASE
+    return CLICK_ORD
+
+
+def change_player(G,ABS,ORD):
+
+    G.activePlayer=G.grid[G.selectedSquare[0]][G.selectedSquare[1]]
+    """change active player"""
+
+def piece_color(COLOR):
+    color=None
+    if COLOR == WHITE:
+        color=blanc
+    elif COLOR == BLACK:
+        color=noir
+    return color
+
+def piece_type(TYPE):
+    types=None
+    if TYPE == PAWN:
+        types = display_pawn
+    elif TYPE == ROOK:
+        types = display_rook
+    elif TYPE == BISHOP:
+        types = display_bishop
+    elif TYPE == KNIGHT:
+        types = display_knight
+    elif TYPE == QUEEN:
+        types = display_queen
+    else:
+        types = display_king
+    return types
+
+def ennemy():
+    """optional: can't play if not your turn"""
+
+
+### IV DROP PIECES ###
+
+def drop_piece(G,ABS,ORD):
+    """ drop a piece"""
+
+    G.grid[ABS][ORD]=G.activePlayer
+
+def select_piece(G,ABS,ORD):
+
+   G.selectedSquare = (ABS,ORD)
+   """select the piece you click on"""
+
+
+
+def valid_case(G,ABS,ORD):
+    """ Vérifie si un pion peut être posée sur la case"""
+
+    condition=False
+                                        # Si il n'y a pas de pions sur la case est qu'il y a au moins une direction valide, alors la case est valide
+    if J.grille[i][j] == AUCUN and len(liste_direction_valide(J,i,j)) !=0:
+
+        condition=True
+
+    return condition
+
+def valid_list_directions(G,ABS,ORD):
+
+    resultat = []                       # Crée une liste vide resultat
+    for l in range (len(ROOK_DIR)):
+        if move_rook(G,ROOK_DIR[l],G.activePlayer,ABS,ORD)==True:
+                                        # Si la direction est valide, alors ajoute la direction valide dans resultat
+            resultat.append(ROOK_DIR[l])
+    return resultat
+
+def move_rook(G,direction,player,ABS,ORD):
+
+
+
+    condition=False
+    dirx=direction[0]                   # Coordonnée x de la direction
+    diry=direction[1]                   # Coordonnée y de la direction
+    k=1
+    while is_valid_pos(ABS+dirx*k,ORD+diry*k) and G.grid[ABS+dirx*k][ORD+diry*k] != NONE:
+                                        # Tant que la direction est valide
+        PIECE=G.grid[ABS+dirx*k][ORD+diry*k]
+        print(PIECE)
+        if P.type[0] == G.activePlayer:
+
+
+            condition=True
+
+        k=k+1
+
+    return condition
+
+
+
+def is_valid_pos(posx,posy):
+    """ Check if square is still in the game grid"""
+    return 0<=posx<LEN_GRID and 0<=posy<LEN_GRID
+
+
+def delete_piece(G):
+
+    G.grid[G.selectedSquare[0]][G.selectedSquare[1]] = NONE
+
+    G.selectedSquare = (None)
+
+    """erase the piece that move"""
+
+def valid_move():
+    """see later if one or more"""
+
+
+### VI DISPLAY ###
+
+def display_panel():
+    ''' Show the panel with 2 different colors for each case'''
+
+    for ABS in range(0,NBR_SQU):
+
+        for ORD in range(0,NBR_SQU):
+
+            if ABS%2 == 0 and ORD%2 == 0 or ABS%2 != 0 and ORD%2 != 0:
+            # If square abs and ord are even or if square abs and ord are odd
+
+                affiche_rectangle_plein(Point(LEN_CASE*ABS,LEN_CASE*ORD),Point(LEN_CASE*(ABS+1),LEN_CASE*(ORD+1)),PANEL_COLOR1)
+
+            else :
+                affiche_rectangle_plein(Point(LEN_CASE*ABS,LEN_CASE*ORD),Point(LEN_CASE*(ABS+1),LEN_CASE*(ORD+1)),PANEL_COLOR2)
+
+
+
+def display_piece(G,P):
+    ''' Show a normal piece on the grid regardless of their type, while taking in count their color'''
+
+    for ABS in range (0,NBR_SQU):
+        for ORD in range (0,NBR_SQU):
+
+            if G.grid[ABS][ORD] != NONE:
+
+                PIECE=G.grid[ABS][ORD]
+
+                color = piece_color(PIECE[0])
+
+                types = piece_type(PIECE[1])
+
+                types(ABS,ORD,color)
+
+
+
+
+
+def display_pawn(ABS,ORD,color):
+
+    RAYON=LEN_CASE//6
+
+    affiche_cercle_plein(Point(ABS*LEN_CASE +LEN_CASE//2, ORD*LEN_CASE +LEN_CASE//2+RAYON),RAYON-RAYON//3,color)
+    affiche_cercle_plein(Point(ABS*LEN_CASE +LEN_CASE//2, ORD*LEN_CASE +LEN_CASE//2),RAYON,color)
+    affiche_cercle_plein(Point(ABS*LEN_CASE +LEN_CASE//2, ORD*LEN_CASE +LEN_CASE//2-RAYON),RAYON+RAYON//3,color)
+
+def display_rook(ABS,ORD,color):
+
+    affiche_rectangle_plein(Point(ABS*LEN_CASE +LEN_CASE//10, ORD*LEN_CASE +LEN_CASE//10),Point(ABS*LEN_CASE +9*LEN_CASE//10, ORD*LEN_CASE +2*LEN_CASE//10),color)
+    affiche_rectangle_plein(Point(ABS*LEN_CASE +3*LEN_CASE//10, ORD*LEN_CASE +2*LEN_CASE//10),Point(ABS*LEN_CASE +7*LEN_CASE//10, ORD*LEN_CASE +7*LEN_CASE//10),color)
+    affiche_rectangle_plein(Point(ABS*LEN_CASE +LEN_CASE//9, ORD*LEN_CASE +7*LEN_CASE//10),Point(ABS*LEN_CASE +8*LEN_CASE//9, ORD*LEN_CASE +8*LEN_CASE//10),color)
+    affiche_rectangle_plein(Point(ABS*LEN_CASE +LEN_CASE//9, ORD*LEN_CASE +8*LEN_CASE//10),Point(ABS*LEN_CASE +2*LEN_CASE//9, ORD*LEN_CASE +9*LEN_CASE//10),color)
+    affiche_rectangle_plein(Point(ABS*LEN_CASE +3*LEN_CASE//9, ORD*LEN_CASE +8*LEN_CASE//10),Point(ABS*LEN_CASE +4*LEN_CASE//9, ORD*LEN_CASE +9*LEN_CASE//10),color)
+    affiche_rectangle_plein(Point(ABS*LEN_CASE +5*LEN_CASE//9, ORD*LEN_CASE +8*LEN_CASE//10),Point(ABS*LEN_CASE +6*LEN_CASE//9, ORD*LEN_CASE +9*LEN_CASE//10),color)
+    affiche_rectangle_plein(Point(ABS*LEN_CASE +7*LEN_CASE//9, ORD*LEN_CASE +8*LEN_CASE//10),Point(ABS*LEN_CASE +8*LEN_CASE//9, ORD*LEN_CASE +9*LEN_CASE//10),color)
+
+def display_bishop(ABS,ORD,color):
+
+    RAYON=LEN_CASE//4
+
+    affiche_cercle_plein(Point(ABS*LEN_CASE +LEN_CASE//2, ORD*LEN_CASE +LEN_CASE//2+RAYON),RAYON//3,color)
+    affiche_cercle_plein(Point(ABS*LEN_CASE +LEN_CASE//2, ORD*LEN_CASE +LEN_CASE//2),RAYON,color)
+    affiche_rectangle_plein(Point(ABS*LEN_CASE +LEN_CASE//10, ORD*LEN_CASE +LEN_CASE//10),Point(ABS*LEN_CASE +9*LEN_CASE//10, ORD*LEN_CASE +3*LEN_CASE//10),color)
+
+def display_king(ABS,ORD,color):
+
+    RAYON=LEN_CASE//15
+
+    affiche_rectangle_plein(Point(ABS*LEN_CASE +LEN_CASE//10, ORD*LEN_CASE +LEN_CASE//10),Point(ABS*LEN_CASE +9*LEN_CASE//10, ORD*LEN_CASE +3*LEN_CASE//10),color)
+    affiche_triangle_plein(Point(ABS*LEN_CASE +3*LEN_CASE//10, ORD*LEN_CASE +4*LEN_CASE//10),Point(ABS*LEN_CASE +LEN_CASE//10, ORD*LEN_CASE +3*LEN_CASE//10),Point(ABS*LEN_CASE +2*LEN_CASE//10, ORD*LEN_CASE +8*LEN_CASE//10),color)
+    affiche_triangle_plein(Point(ABS*LEN_CASE +3*LEN_CASE//10, ORD*LEN_CASE +4*LEN_CASE//10),Point(ABS*LEN_CASE +5*LEN_CASE//10, ORD*LEN_CASE +5*LEN_CASE//10),Point(ABS*LEN_CASE +4*LEN_CASE//10, ORD*LEN_CASE +8*LEN_CASE//10),color)
+    affiche_triangle_plein(Point(ABS*LEN_CASE +7*LEN_CASE//10, ORD*LEN_CASE +4*LEN_CASE//10),Point(ABS*LEN_CASE +5*LEN_CASE//10, ORD*LEN_CASE +5*LEN_CASE//10),Point(ABS*LEN_CASE +6*LEN_CASE//10, ORD*LEN_CASE +8*LEN_CASE//10),color)
+    affiche_triangle_plein(Point(ABS*LEN_CASE +7*LEN_CASE//10, ORD*LEN_CASE +4*LEN_CASE//10),Point(ABS*LEN_CASE +9*LEN_CASE//10, ORD*LEN_CASE +3*LEN_CASE//10),Point(ABS*LEN_CASE +8*LEN_CASE//10, ORD*LEN_CASE +8*LEN_CASE//10),color)
+    affiche_triangle_plein(Point(ABS*LEN_CASE +LEN_CASE//10, ORD*LEN_CASE +3*LEN_CASE//10),Point(ABS*LEN_CASE +5*LEN_CASE//10, ORD*LEN_CASE +5*LEN_CASE//10),Point(ABS*LEN_CASE +9*LEN_CASE//10, ORD*LEN_CASE +3*LEN_CASE//10),color)
+    affiche_cercle_plein(Point(ABS*LEN_CASE +2*LEN_CASE//10, ORD*LEN_CASE +8*LEN_CASE//10),RAYON,color)
+    affiche_cercle_plein(Point(ABS*LEN_CASE +4*LEN_CASE//10, ORD*LEN_CASE +8*LEN_CASE//10),RAYON,color)
+    affiche_cercle_plein(Point(ABS*LEN_CASE +6*LEN_CASE//10, ORD*LEN_CASE +8*LEN_CASE//10),RAYON,color)
+    affiche_cercle_plein(Point(ABS*LEN_CASE +8*LEN_CASE//10, ORD*LEN_CASE +8*LEN_CASE//10),RAYON,color)
+
+
+def display_queen(ABS,ORD,color):
+
+    RAYON=LEN_CASE//4
+
+    affiche_cercle_plein(Point(ABS*LEN_CASE +LEN_CASE//3, ORD*LEN_CASE +LEN_CASE//2),RAYON,color)
+    affiche_cercle_plein(Point(ABS*LEN_CASE +2*LEN_CASE//3, ORD*LEN_CASE +LEN_CASE//2),RAYON,color)
+    affiche_rectangle_plein(Point(ABS*LEN_CASE +LEN_CASE//5, ORD*LEN_CASE +LEN_CASE//10),Point(ABS*LEN_CASE +4*LEN_CASE//5, ORD*LEN_CASE +2*LEN_CASE//5),color)
+    affiche_rectangle_plein(Point(ABS*LEN_CASE +3*LEN_CASE//7, ORD*LEN_CASE +LEN_CASE//2),Point(ABS*LEN_CASE +4*LEN_CASE//7, ORD*LEN_CASE +17*LEN_CASE//20),color)
+
+
+def display_knight(ABS,ORD,color):
+    if color == blanc:
+        other=noir
+    else:
+        other=blanc
+
+    affiche_rectangle_plein(Point(ABS*LEN_CASE +LEN_CASE//2, ORD*LEN_CASE +LEN_CASE//10),Point(ABS*LEN_CASE +9*LEN_CASE//10, ORD*LEN_CASE +LEN_CASE//2),color)
+    affiche_rectangle_plein(Point(ABS*LEN_CASE +LEN_CASE//10, ORD*LEN_CASE +LEN_CASE//2),Point(ABS*LEN_CASE +9*LEN_CASE//10, ORD*LEN_CASE +7*LEN_CASE//10),color)
+    affiche_rectangle_plein(Point(ABS*LEN_CASE +LEN_CASE//10, ORD*LEN_CASE +9*LEN_CASE//20),Point(ABS*LEN_CASE +3*LEN_CASE//10, ORD*LEN_CASE +LEN_CASE//2),color)
+    affiche_triangle_plein(Point(ABS*LEN_CASE +3*LEN_CASE//10, ORD*LEN_CASE +LEN_CASE//2),Point(ABS*LEN_CASE +3*LEN_CASE//10, ORD*LEN_CASE +9*LEN_CASE//20),Point(ABS*LEN_CASE +LEN_CASE//2, ORD*LEN_CASE +LEN_CASE//2),color)
+    affiche_triangle_plein(Point(ABS*LEN_CASE +6*LEN_CASE//10, ORD*LEN_CASE +7*LEN_CASE//10),Point(ABS*LEN_CASE +8*LEN_CASE//10, ORD*LEN_CASE + 7*LEN_CASE//10),Point(ABS*LEN_CASE +7*LEN_CASE//10, ORD*LEN_CASE +8*LEN_CASE//10),color)
+    affiche_cercle_plein(Point(ABS*LEN_CASE +LEN_CASE//2, ORD*LEN_CASE +6*LEN_CASE//10),LEN_CASE//25,other)
+
+
+def display_config_panel(G):
+    ''' for mater, change color, timer, numer of piece..'''
+    affiche_rectangle_plein(Point(LEN_GRID,0),Point(LEN_GRID+LEN_PANEL,LEN_GRID),CONFIG_COLOR3)
+
+
+def display_piece_selection(G):
+    if G.selectedSquare != (None):
+        affiche_rectangle(Point(G.selectedSquare[0]*LEN_CASE,G.selectedSquare[1]*LEN_CASE),Point((G.selectedSquare[0]+1)*LEN_CASE,(G.selectedSquare[1]+1)*LEN_CASE),rouge,5)
+    '''show which piece is selected'''
+
+
+
+def display_game(J):
+    """
+    Affiche toutes les composantes du jeu
+    """
+    display_panel()
+    display_config_panel(G)
+    display_piece(G,P)
+    display_piece_selection(G)
+    affiche_tout()
+
+
+### VII MAIN ###
+
+init_fenetre(LEN_GRID+LEN_PANEL,LEN_GRID,"Chess Game")
+affiche_auto_off()
+
+P = init_piece()
+
+PAWN_W = (P.color[0], P.type[0])
+PAWN_B = (P.color[1], P.type[0])
+
+KNIGHT_W = (P.color[0], P.type[1])
+KNIGHT_B = (P.color[1], P.type[1])
+
+BISHOP_W = (P.color[0], P.type[2])
+BISHOP_B = (P.color[1], P.type[2])
+
+ROOK_W = (P.color[0], P.type[3])
+ROOK_B = (P.color[1], P.type[3])
+
+QUEEN_W = (P.color[0], P.type[4])
+QUEEN_B = (P.color[1], P.type[4])
+
+KING_W = (P.color[0], P.type[5])
+KING_B = (P.color[1], P.type[5])
+
+
+G = init_game()
+display_game(G)
+clic = Point()
+
+
+
+while not(end_game(G)) and pas_echap():
+    clic = wait_clic()
+    if clic.x < LEN_GRID: # we r on the panel
+        val=valid_list_directions(G,3,4)
+        print(val)
+        ABS = get_abs(clic)
+        ORD = get_ord(clic)
+
+        if G.grid[ABS][ORD] != NONE:
+            select_piece(G,ABS,ORD) # select the piece
+            change_player(G,ABS,ORD) # color of player become the one of the selected piece
+
+        elif G.grid[ABS][ORD] == NONE and G.selectedSquare != (None) : #no piece and a piece selected before
+            drop_piece(G,ABS,ORD)    # drop a piece on the case selcted (2nd clic)
+            delete_piece (G)  # take off the piece (1st piece)
+    # nothing if not on panel
+    display_game(G)
+attendre_echap()
